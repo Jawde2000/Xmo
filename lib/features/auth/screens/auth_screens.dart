@@ -22,7 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-
+  final TextEditingController _repeatPassController = TextEditingController();
   @override
   void dispose() {
     super.dispose();
@@ -113,6 +113,39 @@ class _AuthScreenState extends State<AuthScreen> {
                 },
               ),
             ),
+            if (_auth == Auth.signin)
+              (Container(
+                  padding: const EdgeInsets.all(8.0),
+                  color: globalV.backgroundColor,
+                  child: Form(
+                    key: _signupFormKey,
+                    child: Column(children: [
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTextField(
+                          controller: _nameController, hintText: "Name"),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTextField(
+                          controller: _mailController,
+                          hintText: "Enter your email"),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTextField(
+                          controller: _passController,
+                          hintText: "Enter your password"),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTextField(
+                        controller: _repeatPassController,
+                        hintText: "Enter your password again",
+                      ),
+                    ]),
+                  ))),
           ],
         ),
       )),
