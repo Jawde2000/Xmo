@@ -4,7 +4,7 @@ const userScheme = mongoose.Schema({
     name: {
         required: true,
         type: String,
-        trim: true
+        trim: true,
     },
     email: {
         required: true,
@@ -13,7 +13,7 @@ const userScheme = mongoose.Schema({
         validate: {
             validator: (value) => {
                 const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-                return alue.match(re);
+                return value.match(re);
             },
             message: "Please enter a valid email"
         }
@@ -23,11 +23,14 @@ const userScheme = mongoose.Schema({
         type: String,
     },
     address: {
-        required: true,
-        default: '',
+        type: String,
+        default: "",
     },
     type: {
         type: String, 
-        default: 'user',
-    }
-})
+        default: "user",
+    },
+});
+
+const user = mongoose.model('User', userScheme);
+module.exports = user;

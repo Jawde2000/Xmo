@@ -12,7 +12,12 @@ const AuthRouter = require("./routes/auth");
 
 //middleware
 //client -> middleware(bridge) -> server -> client
+//sequence is important here
+const bodyParser = require("body-parser")
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(AuthRouter)
+
 
 //connections
 mongoose.connect(db).then(() => {

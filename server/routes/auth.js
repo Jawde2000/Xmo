@@ -1,6 +1,7 @@
 // import { initializeApp } from 'firebase/app';
 
 const express = require("express");
+const User = require("../models/user");
 
 const AuthRouter = express.Router();
 
@@ -21,11 +22,29 @@ const AuthRouter = express.Router();
 
 
 
-AuthRouter.post("/api/signup", (req, res) => {
+AuthRouter.post("/api/signup", async (req, res) => {
+    try {
+
     //get data from client
-    const {name, email, pass} = req.body;
+    const { name, email, pass } = req.body;
     //post data into database
-    
+    const userExist = await User.findOne({ email });
+
+    if (userExist) {
+        return res.status(400).json({msg: "User with same email already exist"});
+    }
+
+    let user = new User({
+        email, 
+        pass, 
+        name,
+    });
+
+    user = await user.save();
+    res.json(user);
+} catch (e) {
+    res.status(500).json({error: e.message});
+}
     //return data to user
 });
 
