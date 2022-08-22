@@ -2,7 +2,7 @@
 
 const express = require("express");
 const User = require("../models/user");
-
+const bycrypt = require("bcryptjs");
 const AuthRouter = express.Router();
 
 // const firebaseConfig = {
@@ -34,9 +34,11 @@ AuthRouter.post("/api/signup", async (req, res) => {
         return res.status(400).json({msg: "User with same email already exist"});
     }
 
+    const newHashPass = await bycrypt.hash(pass, 1500);
+
     let user = new User({
         email, 
-        pass, 
+        newHashPass, 
         name,
     });
 
