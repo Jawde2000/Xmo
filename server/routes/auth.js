@@ -38,7 +38,7 @@ AuthRouter.post("/api/signup", async (req, res) => {
 
     let user = new User({
         email, 
-        newHashPass, 
+        pass: newHashPass, 
         name,
     });
 
