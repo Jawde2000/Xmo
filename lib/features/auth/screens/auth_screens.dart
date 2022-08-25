@@ -1,6 +1,8 @@
 import 'package:amazon/common/widgets/custom_button.dart';
 import 'package:amazon/common/widgets/custom_textfield.dart';
 import 'package:amazon/constants/global_variables.dart';
+import 'package:amazon/constants/utils.dart';
+import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 enum Auth {
@@ -24,12 +26,21 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _repeatPassController = TextEditingController();
+  final AuthService authService = AuthService();
   @override
   void dispose() {
     super.dispose();
     _mailController.dispose();
     _passController.dispose();
     _nameController.dispose();
+  }
+
+  void signup() {
+    authService.signUp(
+        context: context,
+        email: _mailController.text,
+        pass: _passController.text,
+        name: _nameController.text);
   }
 
   @override
@@ -48,7 +59,6 @@ class _AuthScreenState extends State<AuthScreen> {
                 fontSize: 22,
                 fontWeight: FontWeight.w100,
               ),
-              
             ),
             ListTile(
               tileColor: _auth == Auth.signup
@@ -76,7 +86,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 padding: const EdgeInsets.all(8.0),
                 color: globalV.backgroundColor,
                 child: Form(
-                  key: _signinFormKey,
+                  key: _signupFormKey,
                   child: Column(children: [
                     const SizedBox(
                       height: 15,
@@ -109,7 +119,18 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomButton(text: "Sign Up", onTap: () {})
+                    CustomButton(
+                        text: "Sign Up",
+                        onTap: () {
+                          if (_passController.text ==
+                              _repeatPassController.text) {
+                            if (_signupFormKey.currentState!.validate()) {
+                              signup();
+                            }
+                          } else {
+                            showToast("Password Did Not Match");
+                          }
+                        }),
                   ]),
                 ),
               )),
@@ -139,7 +160,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   padding: const EdgeInsets.all(8.0),
                   color: globalV.backgroundColor,
                   child: Form(
-                    key: _signupFormKey,
+                    key: _signinFormKey,
                     child: Column(children: [
                       const SizedBox(
                         height: 15,
