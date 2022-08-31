@@ -4,6 +4,7 @@ const express = require("express");
 const User = require("../models/user");
 const bycrypt = require("bcryptjs");
 const AuthRouter = express.Router();
+const jwt = require("jsonwebtoken");
 
 // const firebaseConfig = {
 //     apiKey: "API_KEY",
@@ -44,6 +45,40 @@ AuthRouter.post("/api/signup", async (req, res) => {
 
     user = await user.save();
     res.json(user);
+} catch (e) {
+    res.status(500).json({error: e.message});
+}
+    //return data to user
+});
+
+AuthRouter.post("/api/signin", async (req, res) => {
+    try {
+
+    //get data from client
+    const { email, pass } = req.body;
+    //post data into database
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return res.status(400).json({msg: "User not exist"});
+    }
+
+    const isMatch = await bycrypt.compare(pass, user.pass);
+    if (!isMatch) {
+        return res.status(400).json({msg: "Wrong password"});
+    }
+
+    const token = jwt.sign({id: user._id}, "passwordKey");
+    res.json({token, ...user._doc});
+    //{
+    //  "name": "jamond",
+    //  "email": "ja@gmail.com" 
+    //}
+
+    //become
+    //{ 
+    //  "token": "tokenJWT"
+    //}
 } catch (e) {
     res.status(500).json({error: e.message});
 }
