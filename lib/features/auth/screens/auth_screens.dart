@@ -43,6 +43,13 @@ class _AuthScreenState extends State<AuthScreen> {
         name: _nameController.text);
   }
 
+  void login() {
+    authService.logIn(
+        context: context,
+        email: _mailController.text,
+        pass: _passController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,14 +169,6 @@ class _AuthScreenState extends State<AuthScreen> {
                   child: Form(
                     key: _signinFormKey,
                     child: Column(children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      CustomTextField(
-                          controller: _nameController, hintText: "Name"),
-                      const SizedBox(
-                        height: 15,
-                      ),
                       CustomTextField(
                           controller: _mailController,
                           hintText: "Enter your email"),
@@ -182,7 +181,13 @@ class _AuthScreenState extends State<AuthScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      CustomButton(text: "Log In", onTap: () {})
+                      CustomButton(
+                          text: "Log In",
+                          onTap: () {
+                            if (_signinFormKey.currentState!.validate()) {
+                              login();
+                            }
+                          })
                     ]),
                   ))),
           ],

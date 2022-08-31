@@ -65,7 +65,7 @@ AuthRouter.post("/api/signin", async (req, res) => {
 
     const isMatch = await bycrypt.compare(pass, user.pass);
     if (!isMatch) {
-        return res.status(400).json({msg: "Wrong password"});
+        return res.status(400).json({msg: "Invalid password or email"});
     }
 
     const token = jwt.sign({id: user._id}, "passwordKey");
