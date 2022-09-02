@@ -110,6 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             _repeatPassController.text) {
                           if (_signupFormKey.currentState!.validate()) {
                             signup();
+                            
                           }
                         } else {
                           showToast("Password Did Not Match");

@@ -34,7 +34,6 @@ class AuthService {
           context: context,
           onSuccess: () {
             showSnackBar(context, "You have successfully created an account, an verification will be send to your email");
-            
           });
     } catch (e) {
       showSnackBar(context, e.toString());

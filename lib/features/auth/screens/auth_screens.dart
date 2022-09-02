@@ -101,6 +101,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     CustomTextField(
                       controller: _nameController,
                       hintText: "Name",
+                      maxLength: 128,
                     ),
                     const SizedBox(
                       height: 15,
@@ -108,6 +109,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     CustomTextField(
                       controller: _mailController,
                       hintText: "Email",
+                      maxLength: 128,
                     ),
                     const SizedBox(
                       height: 15,
@@ -115,6 +117,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     CustomTextField(
                       controller: _passController,
                       hintText: "Password",
+                      maxLength: 128,
                     ),
                     const SizedBox(
                       height: 15,
@@ -122,6 +125,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     CustomTextField(
                       controller: _repeatPassController,
                       hintText: "Enter your password again",
+                      maxLength: 128,
                     ),
                     const SizedBox(
                       height: 15,
@@ -170,14 +174,18 @@ class _AuthScreenState extends State<AuthScreen> {
                     key: _signinFormKey,
                     child: Column(children: [
                       CustomTextField(
-                          controller: _mailController,
-                          hintText: "Enter your email"),
+                        controller: _mailController,
+                        hintText: "Enter your email",
+                        maxLength: 128,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
                       CustomTextField(
-                          controller: _passController,
-                          hintText: "Enter your password"),
+                        controller: _passController,
+                        hintText: "Enter your password",
+                        maxLength: 128,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),

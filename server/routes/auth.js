@@ -2,6 +2,7 @@
 
 const express = require("express");
 const User = require("../models/user");
+const Verification = require("../models/verification");
 const bycrypt = require("bcryptjs");
 const AuthRouter = express.Router();
 const jwt = require("jsonwebtoken");
@@ -25,17 +26,19 @@ const jwt = require("jsonwebtoken");
 
 AuthRouter.post("/api/signup", async (req, res) => {
     try {
-
     //get data from client
     const { name, email, pass } = req.body;
     //post data into database
     const userExist = await User.findOne({ email });
+    //generate random 6 digits number
+    const validationNumber = Math.floor(100000 + Math.random() * 900000);
 
     if (userExist) {
         return res.status(400).json({msg: "User with same email already exist"});
     }
 
     const newHashPass = await bycrypt.hash(pass, 15);
+    const newHashValidation = await bycrypt.hash(validationNumber.toString(), 15);
 
     let user = new User({
         email, 
@@ -43,8 +46,15 @@ AuthRouter.post("/api/signup", async (req, res) => {
         name,
     });
 
+    let verification = new Verification({
+        email, 
+        validationNumber: newHashValidation,
+    });
+
     user = await user.save();
+    verification = await verification.save();
     res.json(user);
+    res.json(verification);
 } catch (e) {
     res.status(500).json({error: e.message});
 }
