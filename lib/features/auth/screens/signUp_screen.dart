@@ -41,6 +41,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         name: _nameController.text);
   }
 
+  void verification() {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,6 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   CustomTextField(
                     controller: _nameController,
                     hintText: "Name",
+                    maxLength: 50,
                   ),
                   const SizedBox(
                     height: 15,
@@ -77,6 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   CustomTextField(
                     controller: _mailController,
                     hintText: "Email",
+                    maxLength: 320,
                   ),
                   const SizedBox(
                     height: 15,
@@ -84,6 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   CustomTextField(
                     controller: _passController,
                     hintText: "Password",
+                    maxLength: 128,
                   ),
                   const SizedBox(
                     height: 15,
@@ -91,6 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   CustomTextField(
                     controller: _repeatPassController,
                     hintText: "Enter your password again",
+                    maxLength: 128,
                   ),
                   const SizedBox(
                     height: 15,

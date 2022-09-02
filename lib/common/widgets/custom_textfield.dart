@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  const CustomTextField({Key? key, required this.controller, required this.hintText}) : super(key: key);
+  final int maxLength;
+  const CustomTextField({Key? key, required this.controller, required this.hintText, required this.maxLength}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,9 @@ class CustomTextField extends StatelessWidget {
         
         return null;
       },
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(maxLength),
+      ],
     );
   }
 }

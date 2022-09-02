@@ -22,6 +22,10 @@ const userScheme = mongoose.Schema({
         required: true,
         type: String,
     },
+    emailVeried: {
+        type: Boolean,
+        default: false
+    },
     address: {
         type: String,
         default: "",

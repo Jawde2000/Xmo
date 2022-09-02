@@ -7,15 +7,15 @@ import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'signUp_screen.dart';
 
-class AuthScreen2 extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   static const String routeName = '/auth-screen2';
-  const AuthScreen2({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<AuthScreen2> createState() => _AuthScreen2State();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _AuthScreen2State extends State<AuthScreen2> {
+class _LoginScreenState extends State<LoginScreen> {
   final _signinFormKey = GlobalKey<FormState>();
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
@@ -72,14 +72,18 @@ class _AuthScreen2State extends State<AuthScreen2> {
                     height: 45,
                   ),
                   CustomTextField(
-                      controller: _mailController,
-                      hintText: "Enter your email"),
+                    controller: _mailController,
+                    hintText: "Enter your email",
+                    maxLength: 320,
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
                   CustomTextField(
-                      controller: _passController,
-                      hintText: "Enter your password"),
+                    controller: _passController,
+                    hintText: "Enter your password",
+                    maxLength: 128,
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
