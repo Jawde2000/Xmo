@@ -182,19 +182,7 @@ AuthRouter.patch('/api/updateStatus/', async (req, res) => {
             res.status(500).json({error: "Invalid Email"});
         }
     } catch (error) {
-        res.status(500).json({error: "fucked up"});
-    }
-})
-
-AuthRouter.delete('/api/deleteVerification/:email', async (req, res) => {
-    try {
-        const deleteV = await Verification.findOne({email});
-
-        const result = await deleteV.deleteOne();
-
-        
-    } catch (error) {
-        res.status(500).json({error: e.message});
+        res.status(500).json({error: error.message});
     }
 })
 
