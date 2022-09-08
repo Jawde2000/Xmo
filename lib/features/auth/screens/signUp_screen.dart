@@ -41,10 +41,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         name: _nameController.text);
   }
 
-  void verification() {
-    
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +106,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             _repeatPassController.text) {
                           if (_signupFormKey.currentState!.validate()) {
                             signup();
-                            
                           }
                         } else {
                           showToast("Password Did Not Match");

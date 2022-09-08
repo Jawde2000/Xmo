@@ -9,12 +9,14 @@ class User {
   final String address;
   final String userType;
   final String token;
+  final String emailVerified;
 
   User(
       {required this.id,
       required this.name,
       required this.pass,
       required this.email,
+      required this.emailVerified,
       required this.address,
       required this.userType,
       required this.token});
@@ -25,6 +27,7 @@ class User {
       'name': name,
       'pass': pass,
       'email': email,
+      'emailVerified': emailVerified,
       'address': address,
       'userType': userType,
       'token': token,
@@ -37,6 +40,7 @@ class User {
       name: map['name'] ?? '',
       pass: map['pass'] ?? '',
       email: map['email'] ?? '',
+      emailVerified: map['emailVerified'] ?? '',
       address: map['address'] ?? '',
       userType: map['userType'] ?? '',
       token: map['token'] ?? '',

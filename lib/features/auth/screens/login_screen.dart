@@ -91,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: "Log In",
                       onTap: () {
                         if (_signinFormKey.currentState!.validate()) {
+                          showLoadingStatus("Logging...", true);
                           login();
                         }
                       }),

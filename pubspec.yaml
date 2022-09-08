@@ -35,6 +35,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.5
   fluttertoast: ^8.0.9
+  flutter_easyloading: ^3.0.5
+  flutter_email_sender: ^5.1.0
 
 dev_dependencies:
   flutter_test:

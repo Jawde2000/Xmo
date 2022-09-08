@@ -1,11 +1,13 @@
 import 'package:amazon/constants/global_variables.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(text),
+    duration: const Duration(seconds: 2),
   ));
 }
 
@@ -20,4 +22,8 @@ void showToast(String text) {
       webPosition: "center",
       webBgColor: "linear-gradient(to right, #e19900, #e19900)",
       fontSize: 16.0);
+}
+
+void showLoadingStatus(String status, bool Status) {
+  EasyLoading.show(status: status);
 }
