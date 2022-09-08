@@ -6,8 +6,7 @@ const Verification = require("../models/verification");
 const bycrypt = require("bcrypt");
 const AuthRouter = express.Router();
 const jwt = require("jsonwebtoken");
-const { where, db } = require("../models/user");
-const { ObjectId }  = require("mongodb");
+const { ObjectId, MongoClient }  = require("mongodb");
 const nodeMailer = require("nodemailer");
 
 // const firebaseConfig = {
@@ -165,21 +164,39 @@ AuthRouter.patch('/api/updateStatus/', async (req, res) => {
     
         if (user) {
             user.updateOne({"emailVerified": true, }, {$set: { email }})
-                .then(result => {
-                res.status(200).json(result);
+                .then(
+                    result => {res.status(200).json(result);
             })
                 .catch (err => {
                 res.status(500).json({error: "Could not update the information"});
             })
+
+            const deleteV = await Verification.findOne({email});
+
+            const result = await deleteV.deleteOne();
+
+            if (!result) {
+                return res.status(400).json({message: "Verification Code does not exist"});
+            }
         } else {
-            res.status(500).json({error: "Invalid Email "});
+            res.status(500).json({error: "Invalid Email"});
         }
+    } catch (error) {
+        res.status(500).json({error: "fucked up"});
+    }
+})
+
+AuthRouter.delete('/api/deleteVerification/:email', async (req, res) => {
+    try {
+        const deleteV = await Verification.findOne({email});
+
+        const result = await deleteV.deleteOne();
+
+        
     } catch (error) {
         res.status(500).json({error: e.message});
     }
 })
-
-
 
 module.exports = AuthRouter;
 
