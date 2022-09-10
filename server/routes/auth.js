@@ -63,8 +63,9 @@ AuthRouter.post("/api/signup", async (req, res) => {
             }
         });
 
-        const text = "Dear " + name + ", \n" + "Your Verification Code is " + validationNumber + 
-        ". Please do not share with others. The Verification Code is going to expired in 5 minutes.\nThank you"; 
+        const text = "Dear " + name + ", \n\n" + "Your Verification code is " + validationNumber + 
+        ". Please do not share with others. The Verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
+
 
         const mailOptions = {
             from: 'reimeinc2022@gmail.com', // sender address
@@ -183,6 +184,27 @@ AuthRouter.patch('/api/updateStatus/', async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({error: error.message});
+    }
+})
+
+AuthRouter.post('/api/VerificationTimedOut', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        const deleteV = await Verification.findOne({email});
+
+        const result = await deleteV.deleteOne().then(
+            result => {res.status(200).json({message: "Verification code timed out"});})
+            .catch (err => {
+            res.status(500).json({error: "Could not delete the information"});
+        });
+
+        if (!result) {
+            return res.status(400).json({message: "Verification code expired"});
+        }
+
+    } catch (error) {
+        //res.status(500).json({error: error.message});
     }
 })
 

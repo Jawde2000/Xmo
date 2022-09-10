@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:amazon/common/widgets/custom_button.dart';
 import 'package:amazon/common/widgets/custom_textfield.dart';
 import 'package:amazon/constants/global_variables.dart';
@@ -26,6 +27,43 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _st6letterController = TextEditingController();
   final String email;
   final AuthService authService = AuthService();
+  static const maxSeconds = 5;
+  static int seconds = maxSeconds;
+  Timer? timer;
+
+  // ignore: non_constant_identifier_names
+  void StartTimer() {
+    // ignore: prefer_const_constructors
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      setState(() {
+        if (seconds > 0) {
+          seconds--;
+        } else {
+          stopTimer();
+          verificationTimedOut();
+        }
+
+        stopTimer();
+      });
+    });
+  }
+
+  void stopTimer() {
+    timer?.cancel();
+  }
+
+  // ignore: non_constant_identifier_names
+  Widget clock() {
+    if (seconds == 0) {
+      return const Text("Verification code is expired");
+    }
+
+    return Text("Verification code is going to expire in $seconds");
+  }
+
+  void verificationTimedOut() async {
+    authService.VerificationTimedout(context: context, email: email);
+  }
 
   _VerificationScreenState(this.email);
 
@@ -48,6 +86,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //stopTimer();
+    StartTimer();
+
     return Scaffold(
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
@@ -64,7 +105,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 key: _verificationFormKey,
                 child: Column(
                   children: [
-                    const Text("Enter your verification number"),
+                    const SizedBox(
+                      height: 45,
+                    ),
+                    clock(),
+                    const SizedBox(
+                      height: 45,
+                    ),
+                    const Text("Enter your verification code"),
                     const SizedBox(
                       height: 45,
                     ),
@@ -162,9 +210,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus(),
-                                  verify()
-                                  }
+                                  {FocusScope.of(context).nextFocus(), verify()}
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -180,12 +226,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomButton(
-                      text: "Submit",
-                      onTap: (() {
-                        verify();
-                      }),
-                    )
                   ],
                 ),
               )),

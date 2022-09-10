@@ -137,4 +137,31 @@ class AuthService {
       //showSnackBar(context, e.toString());
     }
   }
+
+  // ignore: non_constant_identifier_names
+  void VerificationTimedout(
+      {required BuildContext context, required email}) async {
+    try {
+      Verification verification =
+          Verification(id: '', email: email, D6_Number: '', token: '');
+
+      http.Response response =
+          await http.post(Uri.parse('$uri/api/VerificationTimedOut'),
+              body: jsonEncode({
+                "email": email,
+              }),
+              headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+
+      httpErrorHandle(
+          response: response,
+          context: context,
+          onSuccess: () {
+            showSnackBar(context, "Verification Timed Out");
+          });
+    } catch (error) {
+      //showSnackBar(context, e.toString());
+    }
+  }
 }

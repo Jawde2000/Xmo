@@ -20,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _repeatPassController = TextEditingController();
   final AuthService authService = AuthService();
   @override
   void dispose() {
@@ -73,16 +72,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomTextField(
                     controller: _mailController,
-                    hintText: "Enter your email",
+                    hintText: "Email address",
                     maxLength: 320,
+                    regex: RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
+                    emptyText: "Please enter your email",
+                    regexText: "Please enter a valid email",
                   ),
                   const SizedBox(
                     height: 15,
                   ),
                   CustomTextField(
                     controller: _passController,
-                    hintText: "Enter your password",
+                    hintText: "Password",
                     maxLength: 128,
+                    regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                    emptyText: "Please enter your password",
+                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                   ),
                   const SizedBox(
                     height: 15,

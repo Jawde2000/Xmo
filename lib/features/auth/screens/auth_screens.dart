@@ -102,6 +102,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _nameController,
                       hintText: "Name",
                       maxLength: 128,
+                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                    emptyText: "Please enter your password",
+                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
@@ -110,6 +113,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _mailController,
                       hintText: "Email",
                       maxLength: 128,
+                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                    emptyText: "Please enter your password",
+                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
@@ -118,6 +124,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _passController,
                       hintText: "Password",
                       maxLength: 128,
+                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                    emptyText: "Please enter your password",
+                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
@@ -126,6 +135,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _repeatPassController,
                       hintText: "Enter your password again",
                       maxLength: 128,
+                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                    emptyText: "Please enter your password",
+                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
@@ -177,6 +189,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         controller: _mailController,
                         hintText: "Enter your email",
                         maxLength: 128,
+                        regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                    emptyText: "Please enter your password",
+                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                       ),
                       const SizedBox(
                         height: 15,
@@ -185,6 +200,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         controller: _passController,
                         hintText: "Enter your password",
                         maxLength: 128,
+                        regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                    emptyText: "Please enter your password",
+                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                       ),
                       const SizedBox(
                         height: 15,
