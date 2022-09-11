@@ -166,4 +166,25 @@ class AuthService {
       //showSnackBar(context, e.toString());
     }
   }
+
+  void resendOTP({required BuildContext context, required String email}) async {
+    try {
+      http.Response response = await http.post(Uri.parse('$uri/api/resendOTP'),
+          body: jsonEncode({
+            "email": email,
+          }),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+
+      httpErrorHandle(
+          response: response,
+          context: context,
+          onSuccess: () {
+            showSnackBar(context, "New OTP have been sent");
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }

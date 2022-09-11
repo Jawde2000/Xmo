@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:amazon/common/widgets/custom_button.dart';
 import 'package:amazon/common/widgets/custom_textfield.dart';
 import 'package:amazon/constants/global_variables.dart';
+import 'package:amazon/constants/utils.dart';
 import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   static int seconds = maxSeconds;
   Timer? timer;
   bool status = true;
+  bool buttonStatus = false;
 
   // ignore: non_constant_identifier_names
   void StartTimer() {
@@ -41,6 +43,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           seconds--;
         } else {
           stopTimer();
+          buttonStatus = !buttonStatus;
           status = false;
           setState(() {
             _o1letterController.text = "0";
@@ -50,10 +53,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
             _fv5letterController.text = "0";
             _st6letterController.text = "0";
           });
+
           verificationTimedOut();
         }
-
-        stopTimer();
+        //stopTimer();
       });
     });
   }
@@ -65,6 +68,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
   // ignore: non_constant_identifier_names
   Widget clock() {
     if (seconds == 0) {
+      setState(() {
+        buttonStatus = true;
+      });
+
       return const Text("OTP code is expired");
     }
 
@@ -94,9 +101,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
     authService.verified(context: context, email: email, D6_number: d6Number);
   }
 
+  void resendOTP() {
+    authService.resendOTP(context: context, email: email);
+  }
+
   @override
   Widget build(BuildContext context) {
-    //stopTimer();
+    stopTimer();
     StartTimer();
 
     return Scaffold(
@@ -224,8 +235,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             width: 64,
                             child: TextField(
                               onChanged: (value) => {
-                                if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus(), verify()}
+                                if (value.length == 1) {verify()}
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -242,9 +252,27 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomButton(text: "Resend OTP", onTap: () {
-                      
-                    })
+                    CustomButton(
+                      text: "Resend OTP",
+                      onTap: () async {
+                        if (buttonStatus == true) {
+                          setState(() {
+                            status = true;
+                            seconds = maxSeconds;
+                            buttonStatus = false;
+                            _o1letterController.text = "";
+                            _s2letterController.text = "";
+                            _t3letterController.text = "";
+                            _f4letterController.text = "";
+                            _fv5letterController.text = "";
+                            _st6letterController.text = "";
+                          });
+                          resendOTP();
+                        } else {
+                          showToast("Please wait until OTP to be timed out");
+                        }
+                      },
+                    ),
                   ],
                 ),
               )),
