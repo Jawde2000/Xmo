@@ -212,40 +212,45 @@ AuthRouter.post('/api/resendOTP', async (req, res) => {
             email, validationNumber
         })
 
-        const transporter = nodeMailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: 'reimeinc2022@gmail.com', // Your email id
-                pass: 'pmmsvmwpcwlybktg' // Your password
-            }
-        });
-
-        const text = "Dear " + user.name + ", \n\n" + "Your Verification code is " + validationNumber + 
-        ". Please do not share with others. The Verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
-
-
-        const mailOptions = {
-            from: 'reimeinc2022@gmail.com', // sender address
-            to: email, // list of receivers
-            subject: "Account Registration", // Subject line
-            text: text //, // plaintext body
-            // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-        };
-
-        transporter.sendMail(mailOptions, function(error, info){
-            if(error){
-                console.log(error);
-                res.json({yo: 'error'});
-            }else{
-                console.log('Message sent: ' + info.response);
-                res.json({yo: info.response});
-            }
-        });
-
-        verification = await verification.save();
-        res.json(verification);
+        if (!user.emailVerified) {
+            const transporter = nodeMailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: 'reimeinc2022@gmail.com', // Your email id
+                    pass: 'pmmsvmwpcwlybktg' // Your password
+                }
+            });
+    
+            const text = "Dear " + user.name + ", \n\n" + "Your Verification code is " + validationNumber + 
+            ". Please do not share with others. The Verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
+    
+    
+            const mailOptions = {
+                from: 'reimeinc2022@gmail.com', // sender address
+                to: email, // list of receivers
+                subject: "Account Registration", // Subject line
+                text: text //, // plaintext body
+                // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+            };
+    
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    console.log(error);
+                    res.json({yo: 'error'});
+                }else{
+                    console.log('Message sent: ' + info.response);
+                    res.json({yo: info.response});
+                }
+            });
+    
+            verification = await verification.save();
+            res.json(verification);
+        } else {
+            return res.status(409).json({msg: 'The user is verified'});
+        }
+        
     } catch (error) {
-
+        res.status(500).json({error: error.message});
     }
 })
 
