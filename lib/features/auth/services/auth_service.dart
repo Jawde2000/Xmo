@@ -82,8 +82,14 @@ class AuthService {
           onSuccess: () {
             showSnackBar(context, "Acccount Logged In");
             Future.delayed(const Duration(seconds: 2), () => "2");
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AmazonScreen()));
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AmazonScreen(),
+                    maintainState: false),
+                (Route<dynamic> route) => false);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -132,8 +138,15 @@ class AuthService {
             showSnackBar(context, "Acccount Logging In");
             Future.delayed(const Duration(seconds: 2), () => "2");
             // ignore: use_build_context_synchronously
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AmazonScreen()));
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
+            // ignore: use_build_context_synchronously
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AmazonScreen(),
+                    maintainState: false),
+                (Route<dynamic> route) => false);
           });
     } catch (e) {
       //showSnackBar(context, e.toString());

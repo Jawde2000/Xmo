@@ -104,7 +104,7 @@ AuthRouter.post("/api/signin", async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-        return res.status(400).json({msg: "User not exist"});
+        return res.status(400).json({msg: "We could not find your account..."});
     }
 
     const isMatch = await bycrypt.compare(pass, user.pass);
