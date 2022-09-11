@@ -109,27 +109,29 @@ class AuthService {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      http.Response response2 =
-          await http.patch(Uri.parse('$uri/api/updateStatus'),
-              body: jsonEncode({
-                "email": email,
-              }),
-              headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          });
-
       httpErrorHandle(
           response: response,
           context: context,
-          onSuccess: () {
+          onSuccess: () async {
+            http.Response response2 =
+                await http.patch(Uri.parse('$uri/api/updateStatus'),
+                    body: jsonEncode({
+                      "email": email,
+                    }),
+                    headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                });
+
             httpErrorHandle(
                 response: response2,
                 context: context,
                 onSuccess: () {
                   Future.delayed(const Duration(seconds: 2), () => "2");
                 });
+            // ignore: use_build_context_synchronously
             showSnackBar(context, "Acccount Logging In");
             Future.delayed(const Duration(seconds: 2), () => "2");
+            // ignore: use_build_context_synchronously
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const AmazonScreen()));
           });

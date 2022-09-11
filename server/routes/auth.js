@@ -193,20 +193,14 @@ AuthRouter.post('/api/VerificationTimedOut', async (req, res) => {
 
         const deleteV = await Verification.findOne({email});
 
-        const result = await deleteV.deleteOne().then(
-            result => {res.status(200).json({message: "Verification code timed out"});})
-            .catch (err => {
-            res.status(500).json({error: "Could not delete the information"});
-        });
-
-        if (!result) {
-            return res.status(400).json({message: "Verification code expired"});
-        }
+        const result = await deleteV.deleteOne();
 
     } catch (error) {
         //res.status(500).json({error: error.message});
     }
 })
+
+
 
 module.exports = AuthRouter;
 

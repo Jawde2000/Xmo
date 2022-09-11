@@ -27,9 +27,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _st6letterController = TextEditingController();
   final String email;
   final AuthService authService = AuthService();
-  static const maxSeconds = 5;
+  static const maxSeconds = 35;
   static int seconds = maxSeconds;
   Timer? timer;
+  bool status = true;
 
   // ignore: non_constant_identifier_names
   void StartTimer() {
@@ -40,6 +41,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
           seconds--;
         } else {
           stopTimer();
+          status = false;
+          setState(() {
+            _o1letterController.text = "0";
+            _s2letterController.text = "0";
+            _t3letterController.text = "0";
+            _f4letterController.text = "0";
+            _fv5letterController.text = "0";
+            _st6letterController.text = "0";
+          });
           verificationTimedOut();
         }
 
@@ -55,13 +65,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
   // ignore: non_constant_identifier_names
   Widget clock() {
     if (seconds == 0) {
-      return const Text("Verification code is expired");
+      return const Text("OTP code is expired");
     }
 
-    return Text("Verification code is going to expire in $seconds");
+    return Text("OTP code is going to expire in $seconds");
   }
 
-  void verificationTimedOut() async {
+  void verificationTimedOut() {
     authService.VerificationTimedout(context: context, email: email);
   }
 
@@ -74,7 +84,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   void verify() {
-    final String d6Number = _o1letterController.text +
+    String d6Number = _o1letterController.text +
         _s2letterController.text +
         _t3letterController.text +
         _f4letterController.text +
@@ -112,7 +122,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     const SizedBox(
                       height: 45,
                     ),
-                    const Text("Enter your verification code"),
+                    const Text("Enter your OTP code"),
                     const SizedBox(
                       height: 45,
                     ),
@@ -135,6 +145,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               controller: _o1letterController,
+                              enabled: status,
                             )),
                         SizedBox(
                             height: 68,
@@ -152,6 +163,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               controller: _s2letterController,
+                              enabled: status,
                             )),
                         SizedBox(
                             height: 68,
@@ -169,6 +181,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               controller: _t3letterController,
+                              enabled: status,
                             )),
                         SizedBox(
                             height: 68,
@@ -186,6 +199,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               controller: _f4letterController,
+                              enabled: status,
                             )),
                         SizedBox(
                             height: 68,
@@ -203,6 +217,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               controller: _fv5letterController,
+                              enabled: status,
                             )),
                         SizedBox(
                             height: 68,
@@ -220,12 +235,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               controller: _st6letterController,
+                              enabled: status,
                             )),
                       ],
                     ),
                     const SizedBox(
                       height: 15,
                     ),
+                    CustomButton(text: "Resend OTP", onTap: () {
+                      
+                    })
                   ],
                 ),
               )),
