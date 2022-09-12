@@ -2,10 +2,13 @@
     package="com.example.amazon">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
+   
         android:label="amazon"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:debuggable="true"
+            android:usesCleartextTraffic="true"
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"

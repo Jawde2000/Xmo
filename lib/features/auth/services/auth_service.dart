@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:amazon/constants/error_handling.dart';
 import 'package:amazon/constants/global_variables.dart';
 import 'package:amazon/constants/utils.dart';
 import 'package:amazon/features/auth/screens/amazon_screen.dart';
 import 'package:amazon/features/auth/screens/emailVerification_screen.dart';
-import 'package:amazon/features/auth/services/email_service.dart';
 import 'package:amazon/models/user.dart';
 import 'package:amazon/models/verification.dart';
 import 'package:flutter/cupertino.dart';

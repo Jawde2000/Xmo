@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -24,6 +25,27 @@ void showToast(String text) {
       fontSize: 16.0);
 }
 
-void showLoadingStatus(String status, bool Status) {
-  EasyLoading.show(status: status);
+// ignore: non_constant_identifier_names
+// Widget showLoadingStatus(String status, bool Status) {
+//   if (Status) {
+//     EasyLoading.init();
+//     EasyLoading.show(status: status);
+//   }
+
+//   return const SizedBox.shrink();
+// }
+
+// ignore: non_constant_identifier_names
+Widget showLoadingStatus(bool Status) {
+  if (Status) {
+    // return const SpinKitCircle(size: 150, color: globalV.amazonColor,);
+    return const Center(
+      child: SpinKitCircle(
+    size: 100,
+    color: globalV.amazonColor,
+      ),
+    );
+  }
+
+  return const SizedBox.shrink();
 }

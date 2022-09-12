@@ -5,6 +5,8 @@ import 'package:amazon/constants/utils.dart';
 import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/widgets/custom_loadingIndicator.dart';
+
 enum Auth {
   signup,
   signin,
@@ -25,6 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _repeatPassController = TextEditingController();
   final AuthService authService = AuthService();
+  bool status = false;
   @override
   void dispose() {
     super.dispose();
@@ -43,6 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final overlay = LoadingOverlay.of(context);
     return Scaffold(
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
@@ -118,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   CustomButton(
                       text: "Sign Up",
-                      onTap: () {
+                      onTap: () async {
                         if (_signupFormKey.currentState!.validate()) {
                           if (_passController.text.length < 12) {
                             showToast(
@@ -126,7 +130,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           } else {
                             if (_passController.text ==
                                 _repeatPassController.text) {
+                              if (status == true) {
+                                await overlay.during(
+                                    Future.delayed(const Duration(seconds: 1)));
+                              }
                               signup();
+                              setState(() {
+                                status = false;
+                              });
                             } else {
                               showToast("Password did not match");
                             }
