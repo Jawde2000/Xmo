@@ -6,6 +6,7 @@ import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/custom_loadingIndicator.dart';
+import '../../../common/widgets/custom_passwordtextfield.dart';
 
 enum Auth {
   signup,
@@ -94,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  CustomTextField(
+                  PasswordTextField(
                     controller: _passController,
                     hintText: "Password",
                     maxLength: 128,
@@ -107,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  CustomTextField(
+                  PasswordTextField(
                     controller: _repeatPassController,
                     hintText: "Confirm",
                     maxLength: 128,

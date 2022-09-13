@@ -7,6 +7,7 @@ import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../../common/widgets/custom_loadingIndicator.dart';
+import '../../../common/widgets/custom_passwordtextfield.dart';
 import 'signUp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -80,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomTextField(
+                    PasswordTextField(
                       controller: _passController,
                       hintText: "Password",
                       maxLength: 128,
