@@ -77,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: "Name",
                     maxLength: 50,
                     regex: RegExp(""),
-                    emptyText: "Please enter your name",
+                    emptyText: "Name field mandatory",
                     regexText: "",
                   ),
                   const SizedBox(
@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     maxLength: 320,
                     regex: RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
-                    emptyText: "Please enter your email",
+                    emptyText: "Email  field mandatory",
                     regexText: "Please enter a valid email",
                   ),
                   const SizedBox(
@@ -101,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     maxLength: 128,
                     regex: RegExp(
                         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
+                    emptyText: "Password field mandatory",
                     regexText:
                         "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character",
                   ),
@@ -114,7 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     maxLength: 128,
                     regex: RegExp(
                         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
+                    emptyText: "Password  field mandatory",
                     regexText:
                         "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character",
                   ),

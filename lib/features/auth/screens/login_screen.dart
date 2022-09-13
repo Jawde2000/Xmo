@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       maxLength: 320,
                       regex: RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
-                      emptyText: "Please enter your email",
+                      emptyText: "Email field mandatory",
                       regexText: "Please enter a valid email",
                     ),
                     const SizedBox(
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       maxLength: 128,
                       regex: RegExp(
                           r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                      emptyText: "Please enter your password",
+                      emptyText: "Password  field mandatory",
                       regexText:
                           "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),

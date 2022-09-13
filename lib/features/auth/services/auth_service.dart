@@ -208,7 +208,7 @@ class AuthService {
           response: response,
           context: context,
           onSuccess: () {
-            showSnackBar(context, "New OTP have been sent");
+            showSnackBar(context, "New OTP code have been sent");
           });
     } catch (e) {
       showSnackBar(context, e.toString());

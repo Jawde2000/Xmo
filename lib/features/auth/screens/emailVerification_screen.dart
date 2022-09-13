@@ -46,12 +46,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
           buttonStatus = !buttonStatus;
           status = false;
           setState(() {
-            _o1letterController.text = "0";
-            _s2letterController.text = "0";
-            _t3letterController.text = "0";
-            _f4letterController.text = "0";
-            _fv5letterController.text = "0";
-            _st6letterController.text = "0";
+            _o1letterController.text = "";
+            _s2letterController.text = "";
+            _t3letterController.text = "";
+            _f4letterController.text = "";
+            _fv5letterController.text = "";
+            _st6letterController.text = "";
           });
 
           verificationTimedOut();
@@ -103,6 +103,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   void resendOTP() {
     authService.resendOTP(context: context, email: email);
+    setState(() {
+      seconds = maxSeconds;
+    });
   }
 
   @override
@@ -266,27 +269,31 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomButton(
-                      text: "Resend OTP",
-                      onTap: () async {
-                        if (buttonStatus == true) {
-                          setState(() {
-                            status = true;
-                            seconds = maxSeconds;
-                            buttonStatus = false;
-                            _o1letterController.text = "";
-                            _s2letterController.text = "";
-                            _t3letterController.text = "";
-                            _f4letterController.text = "";
-                            _fv5letterController.text = "";
-                            _st6letterController.text = "";
-                          });
-                          resendOTP();
-                        } else {
-                          showToast("Please wait until OTP to be timed out");
-                        }
-                      },
-                    ),
+                    buttonStatus == true
+                        ? CustomButton(
+                            text: "Resend OTP",
+                            onTap: () async {
+                              if (buttonStatus == true) {
+                                setState(() {
+                                  status = true;
+                                  buttonStatus = false;
+                                  _o1letterController.text = "";
+                                  _s2letterController.text = "";
+                                  _t3letterController.text = "";
+                                  _f4letterController.text = "";
+                                  _fv5letterController.text = "";
+                                  _st6letterController.text = "";
+                                });
+                                resendOTP();
+                              } else {
+                                showToast(
+                                    "Please wait until OTP to be timed out");
+                              }
+                            },
+                          )
+                        : const SizedBox(
+                            height: 15,
+                          ),
                   ],
                 ),
               )),
