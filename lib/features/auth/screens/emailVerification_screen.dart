@@ -28,7 +28,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _st6letterController = TextEditingController();
   final String email;
   final AuthService authService = AuthService();
-  static const maxSeconds = 35;
+  static const maxSeconds = 60;
   static int seconds = maxSeconds;
   Timer? timer;
   bool status = true;
@@ -146,7 +146,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()}
+                                  {
+                                    FocusScope.of(context).nextFocus(),
+                                    if (value.isEmpty)
+                                      {FocusScope.of(context).previousFocus()}
+                                  }
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -164,7 +168,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()}
+                                  {FocusScope.of(context).nextFocus()},
+                                if (value.isEmpty)
+                                  {FocusScope.of(context).previousFocus()}
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -182,7 +188,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()}
+                                  {FocusScope.of(context).nextFocus()},
+                                if (value.isEmpty)
+                                  {FocusScope.of(context).previousFocus()}
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -200,7 +208,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()}
+                                  {FocusScope.of(context).nextFocus()},
+                                if (value.isEmpty)
+                                  {FocusScope.of(context).previousFocus()}
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -218,7 +228,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()}
+                                  {FocusScope.of(context).nextFocus()},
+                                if (value.isEmpty)
+                                  {FocusScope.of(context).previousFocus()}
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -235,7 +247,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             width: 64,
                             child: TextField(
                               onChanged: (value) => {
-                                if (value.length == 1) {verify()}
+                                if (value.length == 1) {verify()},
+                                if (value.isEmpty)
+                                  {FocusScope.of(context).previousFocus()}
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,

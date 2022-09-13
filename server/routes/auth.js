@@ -108,8 +108,9 @@ AuthRouter.post("/api/signin", async (req, res) => {
     }
 
     const isMatch = await bycrypt.compare(pass, user.pass);
+
     if (!isMatch) {
-        return res.status(400).json({msg: "Invalid password or email"});
+        return res.status(400).json({msg: "Invalid password"});
     }
 
     if (user.emailVerified) {

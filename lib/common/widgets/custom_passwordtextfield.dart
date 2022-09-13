@@ -105,10 +105,9 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
                   color: Colors.black12,
                 )),
                 suffixIcon: GestureDetector(
-                  child: IconButton(
-                    icon: Icon(
-                        _masking ? Icons.visibility_off : Icons.visibility),
-                    onPressed: _toggle,
+                  onTap: _toggle,
+                  child: Icon(
+                    _masking ? Icons.visibility_off : Icons.visibility,
                   ),
                 )),
             validator: (val) {

@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import '../../../common/widgets/custom_loadingIndicator.dart';
 
 class AuthService {
   void signUp({
@@ -18,6 +19,7 @@ class AuthService {
     required String pass,
     required String name,
   }) async {
+    final overlay = LoadingOverlay.of(context);
     try {
       User user = User(
           id: '',
@@ -34,6 +36,8 @@ class AuthService {
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           });
+
+      await overlay.during(Future.delayed(const Duration(seconds: 1)));
 
       httpErrorHandle(
           response: response,
@@ -54,6 +58,8 @@ class AuthService {
       {required BuildContext context,
       required String email,
       required String pass}) async {
+    final overlay = LoadingOverlay.of(context);
+
     try {
       User user = User(
           id: '',
@@ -74,10 +80,13 @@ class AuthService {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
+      await overlay.during(Future.delayed(const Duration(seconds: 1)));
+
       httpErrorHandle(
           response: response,
           context: context,
           onSuccess: () {
+            // status = false;
             showSnackBar(context, "Acccount Logged In");
             Future.delayed(const Duration(seconds: 2), () => "2");
             // Navigator.of(context).push(
@@ -99,6 +108,8 @@ class AuthService {
       {required BuildContext context,
       required String email,
       required String D6_number}) async {
+    final overlay = LoadingOverlay.of(context);
+
     try {
       Verification verification =
           Verification(id: '', email: email, D6_Number: D6_number, token: '');
@@ -112,6 +123,8 @@ class AuthService {
               headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           });
+
+      await overlay.during(Future.delayed(const Duration(seconds: 1)));
 
       httpErrorHandle(
           response: response,
@@ -179,6 +192,7 @@ class AuthService {
   }
 
   void resendOTP({required BuildContext context, required String email}) async {
+    final overlay = LoadingOverlay.of(context);
     try {
       http.Response response = await http.post(Uri.parse('$uri/api/resendOTP'),
           body: jsonEncode({
@@ -187,6 +201,8 @@ class AuthService {
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           });
+
+      await overlay.during(Future.delayed(const Duration(seconds: 1)));
 
       httpErrorHandle(
           response: response,

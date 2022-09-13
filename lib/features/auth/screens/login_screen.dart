@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final AuthService authService = AuthService();
-  bool status = false;
 
   @override
   void dispose() {
@@ -43,8 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final overlay = LoadingOverlay.of(context);
-
     return Scaffold(
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
@@ -98,20 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: "Log In",
                         onTap: () async {
                           if (_signinFormKey.currentState!.validate()) {
-                            setState(() {
-                              status = true;
-                            });
-
-                            if (status == true) {
-                              await overlay.during(
-                                  Future.delayed(const Duration(seconds: 1)));
-                            }
-
                             login();
-
-                            setState(() {
-                              status = false;
-                            });
                           }
                         }),
                     const SizedBox(
