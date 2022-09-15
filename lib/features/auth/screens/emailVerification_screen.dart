@@ -7,6 +7,7 @@ import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class VerificationScreen extends StatefulWidget {
   static const String routeName = '/email-verification';
@@ -33,11 +34,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Timer? timer;
   bool status = true;
   bool buttonStatus = false;
+  bool enterPage = true;
 
   // ignore: non_constant_identifier_names
   void StartTimer() {
     // ignore: prefer_const_constructors
     timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         if (seconds > 0) {
           seconds--;
@@ -54,7 +59,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             _st6letterController.text = "";
           });
 
-          verificationTimedOut();
+          // verificationTimedOut();
         }
         //stopTimer();
       });
@@ -78,8 +83,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
     return Text("OTP code is going to expire in $seconds");
   }
 
-  void verificationTimedOut() {
-    authService.VerificationTimedout(context: context, email: email);
+  void deleteOTP() {
+    authService.deleteOTP(context: context, email: email);
   }
 
   _VerificationScreenState(this.email);
@@ -110,8 +115,20 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    stopTimer();
-    StartTimer();
+    final serverStatus = Provider.of<AuthService>(context, listen: true);
+
+    if (enterPage) {
+      serverStatus.resendOTP(context: context, email: email);
+    }
+
+    setState(() {
+      enterPage = false;
+    });
+
+    if (serverStatus.ServerStatus) {
+      stopTimer();
+      StartTimer();
+    }
 
     return Scaffold(
       backgroundColor: globalV.greyBackgroundCOlor,
@@ -284,6 +301,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   _fv5letterController.text = "";
                                   _st6letterController.text = "";
                                 });
+
+                                deleteOTP();
                                 resendOTP();
                               } else {
                                 showToast(

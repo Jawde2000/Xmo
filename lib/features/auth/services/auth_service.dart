@@ -9,10 +9,13 @@ import 'package:amazon/models/verification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:async';
 import '../../../common/widgets/custom_loadingIndicator.dart';
 
-class AuthService {
+class AuthService extends ChangeNotifier {
+  bool ServerStatus = false;
+
   void signUp({
     required BuildContext context,
     required String email,
@@ -86,15 +89,21 @@ class AuthService {
           response: response,
           context: context,
           onSuccess: () {
-            // status = false;
-            showSnackBar(context, "Acccount Logged In");
             Future.delayed(const Duration(seconds: 2), () => "2");
             // Navigator.of(context).push(
             //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
+
+            // Navigator.pushAndRemoveUntil(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => const AmazonScreen(),
+            //         maintainState: false),
+            //     (Route<dynamic> route) => false);
+
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const AmazonScreen(),
+                    builder: (context) => VerificationScreen(email: email),
                     maintainState: false),
                 (Route<dynamic> route) => false);
           });
@@ -165,7 +174,7 @@ class AuthService {
   }
 
   // ignore: non_constant_identifier_names
-  void VerificationTimedout(
+  void deleteOTP(
       {required BuildContext context, required email}) async {
     try {
       Verification verification =
@@ -180,12 +189,7 @@ class AuthService {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      httpErrorHandle(
-          response: response,
-          context: context,
-          onSuccess: () {
-            showSnackBar(context, "Verification Timed Out");
-          });
+      httpErrorHandle(response: response, context: context, onSuccess: () {});
     } catch (error) {
       //showSnackBar(context, e.toString());
     }
@@ -193,8 +197,9 @@ class AuthService {
 
   void resendOTP({required BuildContext context, required String email}) async {
     final overlay = LoadingOverlay.of(context);
+
     try {
-      http.Response response = await http.post(Uri.parse('$uri/api/resendOTP'),
+      http.Response response = await http.post(Uri.parse('$uri/api/sendOTP'),
           body: jsonEncode({
             "email": email,
           }),
@@ -208,10 +213,18 @@ class AuthService {
           response: response,
           context: context,
           onSuccess: () {
+            ServerStatus = true;
+            notifyListeners();
             showSnackBar(context, "New OTP code have been sent");
           });
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }

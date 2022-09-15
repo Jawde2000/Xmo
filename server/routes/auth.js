@@ -8,6 +8,7 @@ const AuthRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { ObjectId, MongoClient }  = require("mongodb");
 const nodeMailer = require("nodemailer");
+const CronJob = require('cron').CronJob;
 
 // const firebaseConfig = {
 //     apiKey: "API_KEY",
@@ -54,36 +55,6 @@ AuthRouter.post("/api/signup", async (req, res) => {
         let verification = new Verification({
             email, validationNumber
         })
-
-        const transporter = nodeMailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: 'reimeinc2022@gmail.com', // Your email id
-                pass: 'pmmsvmwpcwlybktg' // Your password
-            }
-        });
-
-        const text = "Dear " + name + ", \n\n" + "Your Verification code is " + validationNumber + 
-        ". Please do not share with others. The Verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
-
-
-        const mailOptions = {
-            from: 'reimeinc2022@gmail.com', // sender address
-            to: email, // list of receivers
-            subject: "Account Registration", // Subject line
-            text: text //, // plaintext body
-            // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-        };
-
-        transporter.sendMail(mailOptions, function(error, info){
-            if(error){
-                console.log(error);
-                res.json({yo: 'error'});
-            }else{
-                console.log('Message sent: ' + info.response);
-                res.json({yo: info.response});
-            }
-        });
 
         user = await user.save();
         verification = await verification.save();
@@ -147,6 +118,7 @@ AuthRouter.post("/api/verification", async (req, res) => {
 
         const isMatch = await validationNumber == userV.validationNumber? true:false;
 
+
         if (!isMatch) {
             return res.status(400).json({msg: `Invalid Verification ${validationNumber}`});
         } 
@@ -201,7 +173,7 @@ AuthRouter.post('/api/VerificationTimedOut', async (req, res) => {
     }
 })
 
-AuthRouter.post('/api/resendOTP', async (req, res) => {
+AuthRouter.post('/api/sendOTP', async (req, res) => {
     try {
         const { email } = req.body;
 
@@ -210,31 +182,55 @@ AuthRouter.post('/api/resendOTP', async (req, res) => {
         const validationNumber = Math.floor(100000 + Math.random() * 900000);
 
         let verification = new Verification({
-            email, validationNumber
+            email, validationNumber, 
         })
 
-        if (!user.emailVerified) {
-            const transporter = nodeMailer.createTransport({
-                service: 'Gmail',
-                auth: {
-                    user: 'reimeinc2022@gmail.com', // Your email id
-                    pass: 'pmmsvmwpcwlybktg' // Your password
+        const transporter = nodeMailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'reimeinc2022@gmail.com', // Your email id
+                pass: 'pmmsvmwpcwlybktg' // Your password
+            }
+        });
+
+        const text1 = "Dear " + user.name + ", \n\n" + "Your Verification code is " + validationNumber + 
+            ". Please do not share with others. The verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
+
+        const text2 = "Dear " + user.name + ", \n\n" + "You are logging into a device, please use verification code " + validationNumber + " to log in." +
+        ". Please do not share with others. The verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
+
+        const mailOptionsLogin = {
+            from: 'reimeinc2022@gmail.com', // sender address
+            to: email, // list of receivers
+            subject: "Two-factor Authentication Login", // Subject line
+            text: text1 //, // plaintext body
+                // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+        };
+
+        const mailOptionsRegistration = {
+            from: 'reimeinc2022@gmail.com', // sender address
+            to: email, // list of receivers
+            subject: "Verify your new Account Registration", // Subject line
+            
+            text: text2 //, // plaintext body
+                // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+        };
+    
+        if (user.emailVerified) {
+            transporter.sendMail(mailOptionsLogin, function(error, info){
+                if(error){
+                    console.log(error);
+                    res.json({yo: 'error'});
+                }else{
+                    console.log('Message sent: ' + info.response);
+                    res.json({yo: info.response});
                 }
             });
     
-            const text = "Dear " + user.name + ", \n\n" + "Your Verification code is " + validationNumber + 
-            ". Please do not share with others. The Verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
-    
-    
-            const mailOptions = {
-                from: 'reimeinc2022@gmail.com', // sender address
-                to: email, // list of receivers
-                subject: "Account Registration", // Subject line
-                text: text //, // plaintext body
-                // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-            };
-    
-            transporter.sendMail(mailOptions, function(error, info){
+            verification = await verification.save();
+            res.json(verification);
+        } else if (!user.emailVerified) {
+            transporter.sendMail(mailOptionsRegistration, function(error, info){
                 if(error){
                     console.log(error);
                     res.json({yo: 'error'});
@@ -247,9 +243,10 @@ AuthRouter.post('/api/resendOTP', async (req, res) => {
             verification = await verification.save();
             res.json(verification);
         } else {
-            return res.status(409).json({msg: 'The user is verified'});
+            return res.status(409).json({msg: 'Verify innacessible'});
         }
         
+        res.status(200).json({msg: "OTP sent"});
     } catch (error) {
         res.status(500).json({error: error.message});
     }

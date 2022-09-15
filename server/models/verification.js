@@ -17,7 +17,8 @@ const verificationScheme = mongoose.Schema({
         required: true,
         type: String,
         trim: true
-    }
+    },
+    createdAt: { type: Date, index: { expires: '1m' }, default: Date.now, setDefaultsOnInsert: true },
 })
 
 const verification = mongoose.model("Verification", verificationScheme);
