@@ -8,6 +8,7 @@ const AuthRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { ObjectId, MongoClient }  = require("mongodb");
 const nodeMailer = require("nodemailer");
+const auth = require("../middleware/auth");
 const CronJob = require('cron').CronJob;
 
 // const firebaseConfig = {
@@ -251,6 +252,29 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
         res.status(500).json({error: error.message});
     }
 })
+
+AuthRouter.post("/api/tokenValidStatus", async(res, req) => {
+    try {
+        const token = req.header('x-auth-token');
+        if (!token) return res.json(false);
+        const verified = jwt.verify(token, 'passwordKey');
+        if (!verified) return res.json(false);
+
+        const user = await User.findById(verified.id);
+        if (!user) return res.json(false);
+        if (!user.emailVerified) return res.json(false);
+
+        res.json(true);
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+})
+
+AuthRouter.get("/api/userData", auth, async (req, res) => {
+    const user = await User.findById(req.user);
+    res.json({...user._doc, token: req.token});
+});
+
 
 module.exports = AuthRouter;
 

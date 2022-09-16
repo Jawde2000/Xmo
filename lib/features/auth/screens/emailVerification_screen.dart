@@ -12,10 +12,11 @@ import 'package:provider/provider.dart';
 class VerificationScreen extends StatefulWidget {
   static const String routeName = '/email-verification';
   final String email;
-  const VerificationScreen({Key? key, required this.email}) : super(key: key);
+  final String pass;
+  const VerificationScreen({Key? key, required this.email, required this.pass}) : super(key: key);
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState(email);
+  State<VerificationScreen> createState() => _VerificationScreenState(email, pass);
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
@@ -28,6 +29,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _fv5letterController = TextEditingController();
   final TextEditingController _st6letterController = TextEditingController();
   final String email;
+  final String pass;
   final AuthService authService = AuthService();
   static const maxSeconds = 60;
   static int seconds = maxSeconds;
@@ -87,7 +89,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     authService.deleteOTP(context: context, email: email);
   }
 
-  _VerificationScreenState(this.email);
+  _VerificationScreenState(this.email, this.pass);
 
   @override
   void dispose() {
@@ -103,7 +105,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         _fv5letterController.text +
         _st6letterController.text;
 
-    authService.verified(context: context, email: email, D6_number: d6Number);
+    authService.verified(context: context, email: email, D6_number: d6Number, pass: pass);
   }
 
   void resendOTP() {
@@ -115,7 +117,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final serverStatus = Provider.of<AuthService>(context, listen: true);
+    final serverStatus = Provider.of<AuthService>(context, listen: false);
 
     if (enterPage) {
       serverStatus.resendOTP(context: context, email: email);
