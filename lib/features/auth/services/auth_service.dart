@@ -4,6 +4,7 @@ import 'package:amazon/constants/global_variables.dart';
 import 'package:amazon/constants/utils.dart';
 import 'package:amazon/features/auth/screens/amazon_screen.dart';
 import 'package:amazon/features/auth/screens/emailVerification_screen.dart';
+import 'package:amazon/features/auth/screens/login_screen.dart';
 import 'package:amazon/models/user.dart';
 import 'package:amazon/models/verification.dart';
 import 'package:amazon/providers/user_providers.dart';
@@ -188,11 +189,7 @@ class AuthService extends ChangeNotifier {
               //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
 
               // ignore: use_build_context_synchronously
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AmazonScreen(),
-                      maintainState: false),
+              Navigator.pushNamedAndRemoveUntil(context, AmazonScreen.routeName,
                   (Route<dynamic> route) => false);
             });
       }
@@ -225,6 +222,7 @@ class AuthService extends ChangeNotifier {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token,
         });
+        // ignore: use_build_context_synchronously
         var userProvider = Provider.of<UserProvider>(context, listen: false);
         userProvider.setUser(userRes.body);
       }
@@ -273,9 +271,24 @@ class AuthService extends ChangeNotifier {
           context: context,
           onSuccess: () {
             // if (jsonDecode(response.body)[''])
-            setOTPStatus();
             showSnackBar(context, "New OTP code have been sent");
+            setOTPStatus();
           });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void logoutUser(BuildContext context) async {
+    final overlay = LoadingOverlay.of(context);
+    try {
+      await overlay.during(Future.delayed(const Duration(seconds: 1)));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('x-auth-token', '');
+
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamedAndRemoveUntil(
+          context, LoginScreen.routeName, (route) => false);
     } catch (e) {
       showSnackBar(context, e.toString());
     }

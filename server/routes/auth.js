@@ -195,10 +195,10 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
         });
 
         const text1 = "Dear " + user.name + ", \n\n" + "Your Verification code is " + validationNumber + 
-            ". Please do not share with others. The verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
+            ". Please do not share with others. The verification code is going to expired in 1 minute.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
 
         const text2 = "Dear " + user.name + ", \n\n" + "You are logging into a device, please use verification code " + validationNumber + " to log in." +
-        ". Please do not share with others. The verification code is going to expired in 5 minutes.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
+        ". Please do not share with others. The verification code is going to expired in 1 minute.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
 
         const mailOptionsLogin = {
             from: 'reimeinc2022@gmail.com', // sender address

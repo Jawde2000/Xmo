@@ -1,3 +1,4 @@
+import 'package:amazon/common/widgets/custom_navbar.dart';
 import 'package:amazon/constants/global_variables.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,9 @@ class _AmazonScreenState extends State<AmazonScreen> {
     return Scaffold(
       backgroundColor: globalV.backgroundColor,
       body: const SafeArea(
-        child: Text("Hello"),
+        child: NavBar(),
       ),
+      
     );
   }
 }

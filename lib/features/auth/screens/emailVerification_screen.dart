@@ -117,7 +117,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final serverStatus = Provider.of<AuthService>(context, listen: false);
+    final serverStatus = Provider.of<AuthService>(context, listen: true);
 
     if (enterPage) {
       serverStatus.resendOTP(context: context, email: email);

@@ -109,8 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     CustomButton(
                         text: "New user? Sign in here",
                         onTap: () => {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const SignUpScreen()))
+                              Navigator.pushNamed(
+                                  context, SignUpScreen.routeName)
                             }),
                   ])),
             ),
