@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/features/auth/screens/amazon_screen.dart';
+import 'package:amazon/features/auth/screens/Ximo_screen.dart';
 import 'package:amazon/features/auth/screens/emailVerification_screen.dart';
 import 'package:amazon/features/auth/screens/login_screen.dart';
 import 'package:amazon/features/auth/screens/auth_screens.dart';
@@ -14,7 +14,7 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => UserProvider()),
-      ChangeNotifierProvider(create: (context) => AuthService())
+      ChangeNotifierProvider(create: (context) => AuthService()),
     ],
     child: const MyApp(),
   ));
@@ -40,11 +40,11 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
-      title: 'Amazon',
+      title: 'Ximo',
       theme: ThemeData(
         scaffoldBackgroundColor: globalV.backgroundColor,
         colorScheme: const ColorScheme.light(
-          primary: globalV.amazonColor,
+          primary: globalV.ximoColor,
         ),
         appBarTheme: const AppBarTheme(
           elevation: 0,
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       onGenerateRoute: ((settings) => generateRoute(settings)),
-      home: user.token.isEmpty ? const AmazonScreen() : const LoginScreen(),
+      home: user.token.isEmpty ? const LoginScreen() : const AmazonScreen()
     );
   }
 }

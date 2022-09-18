@@ -78,7 +78,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               leading: Radio(
-                activeColor: globalV.amazonColor,
+                activeColor: globalV.ximoColor,
                 value: Auth.signup,
                 groupValue: _auth,
                 onChanged: (Auth? value) {
@@ -102,9 +102,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _nameController,
                       hintText: "Name",
                       maxLength: 128,
-                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
-                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
+                      regex: RegExp(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                      emptyText: "Please enter your password",
+                      regexText:
+                          "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
@@ -113,9 +115,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _mailController,
                       hintText: "Email",
                       maxLength: 128,
-                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
-                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
+                      regex: RegExp(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                      emptyText: "Please enter your password",
+                      regexText:
+                          "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
@@ -124,9 +128,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _passController,
                       hintText: "Password",
                       maxLength: 128,
-                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
-                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
+                      regex: RegExp(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                      emptyText: "Please enter your password",
+                      regexText:
+                          "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
@@ -135,25 +141,30 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _repeatPassController,
                       hintText: "Enter your password again",
                       maxLength: 128,
-                      regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
-                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
+                      regex: RegExp(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                      emptyText: "Please enter your password",
+                      regexText:
+                          "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     CustomButton(
-                        text: "Sign Up",
-                        onTap: () {
-                          if (_passController.text ==
-                              _repeatPassController.text) {
-                            if (_signupFormKey.currentState!.validate()) {
-                              signup();
-                            }
-                          } else {
-                            showToast("Password Did Not Match");
+                      text: const Text("Sign Up"),
+                      onTap: () {
+                        if (_passController.text ==
+                            _repeatPassController.text) {
+                          if (_signupFormKey.currentState!.validate()) {
+                            signup();
                           }
-                        }),
+                        } else {
+                          showToast("Password Did Not Match");
+                        }
+                      },
+                      height: 30,
+                      width: 30,
+                    ),
                   ]),
                 ),
               )),
@@ -168,7 +179,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               leading: Radio(
-                activeColor: globalV.amazonColor,
+                activeColor: globalV.ximoColor,
                 value: Auth.signin,
                 groupValue: _auth,
                 onChanged: (Auth? value) {
@@ -189,9 +200,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         controller: _mailController,
                         hintText: "Enter your email",
                         maxLength: 128,
-                        regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
-                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
+                        regex: RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                        emptyText: "Please enter your password",
+                        regexText:
+                            "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                       ),
                       const SizedBox(
                         height: 15,
@@ -200,20 +213,25 @@ class _AuthScreenState extends State<AuthScreen> {
                         controller: _passController,
                         hintText: "Enter your password",
                         maxLength: 128,
-                        regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
-                    emptyText: "Please enter your password",
-                    regexText: "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
+                        regex: RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{12,}$'),
+                        emptyText: "Please enter your password",
+                        regexText:
+                            "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and must be 12 characters in length",
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       CustomButton(
-                          text: "Log In",
-                          onTap: () {
-                            if (_signinFormKey.currentState!.validate()) {
-                              login();
-                            }
-                          })
+                        text: const Text("Log In"),
+                        onTap: () {
+                          if (_signinFormKey.currentState!.validate()) {
+                            login();
+                          }
+                        },
+                        height: 30,
+                        width: 30,
+                      )
                     ]),
                   ))),
           ],

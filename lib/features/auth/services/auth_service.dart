@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:amazon/constants/error_handling.dart';
 import 'package:amazon/constants/global_variables.dart';
 import 'package:amazon/constants/utils.dart';
-import 'package:amazon/features/auth/screens/amazon_screen.dart';
+import 'package:amazon/features/auth/screens/Ximo_screen.dart';
 import 'package:amazon/features/auth/screens/emailVerification_screen.dart';
 import 'package:amazon/features/auth/screens/login_screen.dart';
 import 'package:amazon/models/user.dart';
@@ -173,6 +173,7 @@ class AuthService extends ChangeNotifier {
             response: response3,
             context: context,
             onSuccess: () async {
+              
               Future.delayed(const Duration(seconds: 2), () => "2");
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.setString(
@@ -288,7 +289,7 @@ class AuthService extends ChangeNotifier {
 
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
-          context, LoginScreen.routeName, (route) => false);
+          context, LoginScreen.routeName, (Route<dynamic> route) => false);
     } catch (e) {
       showSnackBar(context, e.toString());
     }

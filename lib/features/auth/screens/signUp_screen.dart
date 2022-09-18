@@ -29,6 +29,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _repeatPassController = TextEditingController();
   final AuthService authService = AuthService();
   bool status = false;
+  final double borderRadius = 12;
+
   @override
   void dispose() {
     super.dispose();
@@ -52,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(50.0),
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -64,8 +66,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(8.0),
-              color: globalV.backgroundColor,
+              decoration: BoxDecoration(
+                color: globalV.backgroundColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(borderRadius),
+                ),
+              ),
+              padding: const EdgeInsets.all(30.0),
               child: Form(
                 key: _signupFormKey,
                 child: Column(children: [
@@ -122,29 +129,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 15,
                   ),
                   CustomButton(
-                      text: "Sign Up",
-                      onTap: () async {
-                        if (_signupFormKey.currentState!.validate()) {
-                          if (_passController.text.length < 12) {
-                            showToast(
-                                "Password must be at least 12 characters in length");
-                          } else {
-                            if (_passController.text ==
-                                _repeatPassController.text) {
-                              if (status == true) {
-                                await overlay.during(
-                                    Future.delayed(const Duration(seconds: 1)));
-                              }
-                              signup();
-                              setState(() {
-                                status = false;
-                              });
-                            } else {
-                              showToast("Password did not match");
+                    text: const Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    onTap: () async {
+                      if (_signupFormKey.currentState!.validate()) {
+                        if (_passController.text.length < 12) {
+                          showToast(
+                              "Password must be at least 12 characters in length");
+                        } else {
+                          if (_passController.text ==
+                              _repeatPassController.text) {
+                            if (status == true) {
+                              await overlay.during(
+                                  Future.delayed(const Duration(seconds: 1)));
                             }
+                            signup();
+                            setState(() {
+                              status = false;
+                            });
+                          } else {
+                            showToast("Password did not match");
                           }
                         }
-                      }),
+                      }
+                    },
+                    height: 0.08,
+                    width: 0.3,
+                  ),
                 ]),
               ),
             ),

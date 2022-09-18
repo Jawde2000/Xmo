@@ -96,14 +96,14 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             controller: controller,
             decoration: InputDecoration(
                 hintText: hintText,
-                border: const OutlineInputBorder(
+                border: const UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: Colors.black12,
                 )),
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                  color: Colors.black12,
-                )),
+                // enabledBorder: const OutlineInputBorder(
+                //     borderSide: BorderSide(
+                //   color: Colors.black12,
+                // )),
                 suffixIcon: GestureDetector(
                   onTap: _toggle,
                   child: Icon(

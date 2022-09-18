@@ -17,7 +17,7 @@ void showToast(String text) {
       msg: text,
       gravity: ToastGravity.BOTTOM,
       toastLength: Toast.LENGTH_LONG,
-      backgroundColor: globalV.amazonColor,
+      backgroundColor: globalV.ximoColor,
       textColor: Colors.white,
       timeInSecForIosWeb: 1,
       webPosition: "center",
@@ -41,8 +41,8 @@ Widget showLoadingStatus(bool Status) {
     // return const SpinKitCircle(size: 150, color: globalV.amazonColor,);
     return const Center(
       child: SpinKitCircle(
-    size: 100,
-    color: globalV.amazonColor,
+        size: 100,
+        color: globalV.ximoColor,
       ),
     );
   }

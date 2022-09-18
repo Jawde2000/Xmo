@@ -11,7 +11,7 @@ class globalV {
     stops: [0.5, 1.0],
   );
 
-  static const amazonColor = Color.fromRGBO(255, 153, 0, 1);
+  static const ximoColor = Color.fromRGBO(152, 255, 152, 12);
   static const backgroundColor = Colors.white;
   static const Color greyBackgroundCOlor = Color(0xffebecee);
   static var selectedNavBarColor = Colors.cyan[800]!;

@@ -27,14 +27,14 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
-        border: const OutlineInputBorder(
+        border: const UnderlineInputBorder(
             borderSide: BorderSide(
-          color: Colors.black12,
+          color: Color.fromARGB(31, 68, 114, 196),
         )),
-        enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-          color: Colors.black12,
-        )),
+        // enabledBorder: const OutlineInputBorder(
+        //     borderSide: BorderSide(
+        //   color: Colors.black12,
+        // )),
       ),
       validator: (val) {
         if (val == null || val.isEmpty) {

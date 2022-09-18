@@ -13,13 +13,15 @@ class VerificationScreen extends StatefulWidget {
   static const String routeName = '/email-verification';
   final String email;
   final String pass;
-  const VerificationScreen({Key? key, required this.email, required this.pass}) : super(key: key);
+  const VerificationScreen({Key? key, required this.email, required this.pass})
+      : super(key: key);
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState(email, pass);
+  State<VerificationScreen> createState() =>
+      _VerificationScreenState(email, pass);
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _VerificationScreenState extends State<VerificationScreen> with ChangeNotifier  {
   final _verificationFormKey = GlobalKey<FormState>();
   final TextEditingController _verificationController = TextEditingController();
   final TextEditingController _o1letterController = TextEditingController();
@@ -37,6 +39,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   bool status = true;
   bool buttonStatus = false;
   bool enterPage = true;
+  bool lastNum = true;
 
   // ignore: non_constant_identifier_names
   void StartTimer() {
@@ -45,26 +48,29 @@ class _VerificationScreenState extends State<VerificationScreen> {
       if (!mounted) {
         return;
       }
-      setState(() {
-        if (seconds > 0) {
-          seconds--;
-        } else {
-          stopTimer();
-          buttonStatus = !buttonStatus;
-          status = false;
-          setState(() {
-            _o1letterController.text = "";
-            _s2letterController.text = "";
-            _t3letterController.text = "";
-            _f4letterController.text = "";
-            _fv5letterController.text = "";
-            _st6letterController.text = "";
-          });
 
-          // verificationTimedOut();
-        }
-        //stopTimer();
-      });
+      if (lastNum) {
+        setState(() {
+          if (seconds > 0) {
+            seconds--;
+          } else {
+            stopTimer();
+            buttonStatus = !buttonStatus;
+            status = false;
+            setState(() {
+              _o1letterController.text = "";
+              _s2letterController.text = "";
+              _t3letterController.text = "";
+              _f4letterController.text = "";
+              _fv5letterController.text = "";
+              _st6letterController.text = "";
+            });
+
+            // verificationTimedOut();
+          }
+          //stopTimer();
+        });
+      }
     });
   }
 
@@ -93,8 +99,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void dispose() {
+    _o1letterController.dispose();
+    _s2letterController.dispose();
+    _t3letterController.dispose();
+    _f4letterController.dispose();
+    _fv5letterController.dispose();
+    _st6letterController.dispose();
     super.dispose();
-    _verificationController.dispose();
   }
 
   void verify() {
@@ -105,7 +116,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
         _fv5letterController.text +
         _st6letterController.text;
 
-    authService.verified(context: context, email: email, D6_number: d6Number, pass: pass);
+    authService.verified(
+        context: context, email: email, D6_number: d6Number, pass: pass);
   }
 
   void resendOTP() {
@@ -132,11 +144,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
       StartTimer();
     }
 
+    @override
+    void initState() {
+      super.initState();
+    }
+
     return Scaffold(
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(children: [
           const SizedBox(
             height: 45,
@@ -269,7 +286,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             width: 64,
                             child: TextField(
                               onChanged: (value) => {
-                                if (value.length == 1) {verify()},
+                                if (value.length == 1)
+                                  {
+                                    verify(),
+                                  },
                                 if (value.isEmpty)
                                   {FocusScope.of(context).previousFocus()}
                               },
@@ -290,7 +310,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ),
                     buttonStatus == true
                         ? CustomButton(
-                            text: "Resend OTP",
+                            text: const Text(
+                              "Resend OTP",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             onTap: () async {
                               if (buttonStatus == true) {
                                 setState(() {
@@ -308,9 +334,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 resendOTP();
                               } else {
                                 showToast(
-                                    "Please wait until OTP to be timed out");
+                                  "Please wait until OTP to be timed out",
+                                );
                               }
                             },
+                            height: 0.08,
+                            width: 0.3,
                           )
                         : const SizedBox(
                             height: 15,

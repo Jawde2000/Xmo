@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final AuthService authService = AuthService();
+  final double borderRadius = 12;
 
   @override
   void dispose() {
@@ -46,20 +47,25 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(50.0),
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Welcome to Amazon",
+              "Welcome to Ximo",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w100,
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(8.0),
-              color: globalV.backgroundColor,
+              decoration: BoxDecoration(
+                color: globalV.backgroundColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(borderRadius),
+                ),
+              ),
+              padding: const EdgeInsets.all(30.0),
               child: Form(
                   key: _signinFormKey,
                   child: Column(children: [
@@ -92,26 +98,39 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 15,
                     ),
                     CustomButton(
-                        text: "Log In",
-                        onTap: () async {
-                          if (_signinFormKey.currentState!.validate()) {
-                            login();
-                          }
-                        }),
+                      text: const Text("Log In",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600)),
+                      onTap: () async {
+                        if (_signinFormKey.currentState!.validate()) {
+                          login();
+                        }
+                      },
+                      height: 0.08,
+                      width: 0.3,
+                    ),
                     const SizedBox(
                       height: 25,
                     ),
                     const HorizontalLine(
-                        label: "OR", height: 5, colour: globalV.amazonColor),
+                        label: "OR", height: 5, colour: globalV.ximoColor),
                     const SizedBox(
                       height: 15,
                     ),
                     CustomButton(
-                        text: "New user? Sign in here",
-                        onTap: () => {
-                              Navigator.pushNamed(
-                                  context, SignUpScreen.routeName)
-                            }),
+                      text: const Text(
+                        "New user? Sign in here",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onTap: () => {
+                        Navigator.pushNamed(context, SignUpScreen.routeName)
+                      },
+                      height: 0.08,
+                      width: 0.5,
+                    ),
                   ])),
             ),
           ],
