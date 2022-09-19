@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'package:amazon/common/widgets/custom_button.dart';
-import 'package:amazon/common/widgets/custom_textfield.dart';
-import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/constants/utils.dart';
-import 'package:amazon/features/auth/services/auth_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ximo/common/widgets/custom_button.dart';
+import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/constants/utils.dart';
+import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -13,17 +11,18 @@ class VerificationScreen extends StatefulWidget {
   static const String routeName = '/email-verification';
   final String email;
   final String pass;
-  const VerificationScreen({Key? key, required this.email, required this.pass})
+  final String name;
+  const VerificationScreen(
+      {Key? key, required this.email, required this.pass, required this.name})
       : super(key: key);
 
   @override
   State<VerificationScreen> createState() =>
-      _VerificationScreenState(email, pass);
+      _VerificationScreenState(this.email, this.pass, this.name);
 }
 
-class _VerificationScreenState extends State<VerificationScreen> with ChangeNotifier  {
+class _VerificationScreenState extends State<VerificationScreen> {
   final _verificationFormKey = GlobalKey<FormState>();
-  final TextEditingController _verificationController = TextEditingController();
   final TextEditingController _o1letterController = TextEditingController();
   final TextEditingController _s2letterController = TextEditingController();
   final TextEditingController _t3letterController = TextEditingController();
@@ -32,6 +31,7 @@ class _VerificationScreenState extends State<VerificationScreen> with ChangeNoti
   final TextEditingController _st6letterController = TextEditingController();
   final String email;
   final String pass;
+  final String name;
   final AuthService authService = AuthService();
   static const maxSeconds = 60;
   static int seconds = maxSeconds;
@@ -65,7 +65,6 @@ class _VerificationScreenState extends State<VerificationScreen> with ChangeNoti
               _fv5letterController.text = "";
               _st6letterController.text = "";
             });
-
             // verificationTimedOut();
           }
           //stopTimer();
@@ -95,20 +94,24 @@ class _VerificationScreenState extends State<VerificationScreen> with ChangeNoti
     authService.deleteOTP(context: context, email: email);
   }
 
-  _VerificationScreenState(this.email, this.pass);
+  _VerificationScreenState(this.email, this.pass, this.name);
 
   @override
   void dispose() {
+    super.dispose();
     _o1letterController.dispose();
     _s2letterController.dispose();
     _t3letterController.dispose();
     _f4letterController.dispose();
     _fv5letterController.dispose();
     _st6letterController.dispose();
-    super.dispose();
+    setState(() {
+      seconds = maxSeconds;
+    });
   }
 
   void verify() {
+    print("emailVerification-verifyVoid passed");
     String d6Number = _o1letterController.text +
         _s2letterController.text +
         _t3letterController.text +
@@ -116,37 +119,47 @@ class _VerificationScreenState extends State<VerificationScreen> with ChangeNoti
         _fv5letterController.text +
         _st6letterController.text;
 
-    authService.verified(
-        context: context, email: email, D6_number: d6Number, pass: pass);
+    authService.loginVerified(
+        context: context,
+        email: email,
+        D6_number: d6Number,
+        pass: pass,
+        name: name);
   }
 
   void resendOTP() {
-    authService.resendOTP(context: context, email: email);
-    setState(() {
-      seconds = maxSeconds;
-    });
+    // ignore: non_constant_identifier_names
+    final Status = Provider.of<AuthService>(context, listen: true);
+    Status.resendOTP(context: context, email: email, name: name);
+    if (Status.ServerStatus) {
+      setState(() {
+        seconds = maxSeconds;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final serverStatus = Provider.of<AuthService>(context, listen: true);
+    // ignore: non_constant_identifier_names
+    final Status = Provider.of<AuthService>(context, listen: true);
+
+    if (Status.requestSuccess) {
+      setState(() {
+        seconds = maxSeconds;
+      });
+    }
 
     if (enterPage) {
-      serverStatus.resendOTP(context: context, email: email);
+      resendOTP();
     }
 
     setState(() {
       enterPage = false;
     });
 
-    if (serverStatus.ServerStatus) {
+    if (Status.ServerStatus) {
       stopTimer();
       StartTimer();
-    }
-
-    @override
-    void initState() {
-      super.initState();
     }
 
     return Scaffold(
@@ -289,6 +302,9 @@ class _VerificationScreenState extends State<VerificationScreen> with ChangeNoti
                                 if (value.length == 1)
                                   {
                                     verify(),
+                                    setState(() {
+                                      status = !status;
+                                    }),
                                   },
                                 if (value.isEmpty)
                                   {FocusScope.of(context).previousFocus()}

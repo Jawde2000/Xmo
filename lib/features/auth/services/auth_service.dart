@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'package:amazon/constants/error_handling.dart';
-import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/constants/utils.dart';
-import 'package:amazon/features/auth/screens/Ximo_screen.dart';
-import 'package:amazon/features/auth/screens/emailVerification_screen.dart';
-import 'package:amazon/features/auth/screens/login_screen.dart';
-import 'package:amazon/models/user.dart';
-import 'package:amazon/models/verification.dart';
-import 'package:amazon/providers/user_providers.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ximo/constants/error_handling.dart';
+import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/constants/utils.dart';
+import 'package:ximo/features/auth/screens/Ximo_screen.dart';
+import 'package:ximo/features/auth/screens/emailVerification_screen.dart';
+import 'package:ximo/features/auth/screens/login_screen.dart';
+import 'package:ximo/models/user.dart';
+import 'package:ximo/models/verification.dart';
+import 'package:ximo/providers/user_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -17,7 +16,9 @@ import 'dart:async';
 import '../../../common/widgets/custom_loadingIndicator.dart';
 
 class AuthService extends ChangeNotifier {
+  // ignore: non_constant_identifier_names
   bool ServerStatus = false;
+  bool requestSuccess = false;
 
   void signUp({
     required BuildContext context,
@@ -27,6 +28,7 @@ class AuthService extends ChangeNotifier {
   }) async {
     final overlay = LoadingOverlay.of(context);
     try {
+      print("sign up user");
       User user = User(
           id: '',
           name: name,
@@ -43,20 +45,46 @@ class AuthService extends ChangeNotifier {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      await overlay.during(Future.delayed(const Duration(seconds: 1)));
-
       httpErrorHandle(
           response: response,
           context: context,
-          onSuccess: () {
-            showSnackBar(context,
-                "You have successfully created an account, an verification will be send to your email");
-            Future.delayed(const Duration(seconds: 2), () => "2");
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => VerificationScreen(
-                      email: email,
-                      pass: pass,
-                    )));
+          onSuccess: () async {
+            http.Response response =
+                await http.post(Uri.parse('$uri/api/signin'),
+                    body: jsonEncode({
+                      "email": email,
+                      "pass": pass,
+                    }),
+                    headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                });
+
+            await overlay.during(Future.delayed(const Duration(seconds: 1)));
+
+            httpErrorHandle(
+                response: response,
+                context: context,
+                onSuccess: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setString(
+                      'x-auth-token', jsonDecode(response.body)['token']);
+                  // ignore: use_build_context_synchronously
+                  // Provider.of<UserProvider>(context, listen: false)
+                  //     .setUser(response.body);
+                  // ignore: use_build_context_synchronously
+                  showSnackBar(context, "Acccount Logging In");
+                  setResetTimer();
+                  Future.delayed(const Duration(seconds: 2), () => "2");
+
+                  // ignore: use_build_context_synchronously
+                  // Navigator.of(context).push(
+                  //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
+
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushNamedAndRemoveUntil(context,
+                      AmazonScreen.routeName, (Route<dynamic> route) => false);
+                });
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -66,13 +94,14 @@ class AuthService extends ChangeNotifier {
   void logIn(
       {required BuildContext context,
       required String email,
-      required String pass}) async {
+      required String pass,
+      required String name}) async {
     final overlay = LoadingOverlay.of(context);
 
     try {
       User user = User(
           id: '',
-          name: '',
+          name: name,
           pass: pass,
           email: email,
           address: '',
@@ -112,6 +141,7 @@ class AuthService extends ChangeNotifier {
                     builder: (context) => VerificationScreen(
                           email: email,
                           pass: pass,
+                          name: name,
                         ),
                     maintainState: false),
                 (Route<dynamic> route) => false);
@@ -121,14 +151,28 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  void registerVerified(
+      {required BuildContext context,
+      required String email,
+      required String pass,
+      required String name}) async {
+    try {
+      print("registerVerified is passed");
+
+      signUp(context: context, email: email, pass: pass, name: name);
+    } catch (e) {
+      //showSnackBar(context, e.toString());
+    }
+  }
+
   //ignore: non_constant_identifier_names
-  void verified(
+  void loginVerified(
       {required BuildContext context,
       required String email,
       required String D6_number,
-      required String pass}) async {
-    final overlay = LoadingOverlay.of(context);
-
+      required String pass,
+      required String name}) async {
+    print("authservice-loginVerifiedVoid passed");
     try {
       Verification verification =
           Verification(id: '', email: email, D6_Number: D6_number, token: '');
@@ -143,57 +187,54 @@ class AuthService extends ChangeNotifier {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      http.Response response3 = await http.post(Uri.parse('$uri/api/signin'),
-          body: jsonEncode({
-            "email": email,
-            "pass": pass,
-          }),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          });
+      httpErrorHandle(
+          response: response,
+          context: context,
+          onSuccess: () async {
+            http.Response signinResponse =
+                await http.post(Uri.parse('$uri/api/signin'),
+                    body: jsonEncode({
+                      "email": email,
+                      "pass": pass,
+                    }),
+                    headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                });
 
-      await overlay.during(Future.delayed(const Duration(seconds: 1)));
+            if (jsonDecode(signinResponse.body)['emailVerified'] == true) {
+              print("login is passed");
+              httpErrorHandle(
+                  response: signinResponse,
+                  context: context,
+                  onSuccess: () async {
+                    Future.delayed(const Duration(seconds: 2), () => "2");
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs.setString('x-auth-token',
+                        jsonDecode(signinResponse.body)['token']);
+                    // ignore: use_build_context_synchronously
+                    Provider.of<UserProvider>(context, listen: false)
+                        .setUser(response.body);
+                    // ignore: use_build_context_synchronously
+                    showSnackBar(context, "Acccount Logging In");
+                    setResetTimer();
+                    Future.delayed(const Duration(seconds: 2), () => "2");
 
-      if (!jsonDecode(response3.body)['emailVerified']) {
-        httpErrorHandle(
-            response: response,
-            context: context,
-            onSuccess: () async {
-              http.Response response2 =
-                  await http.patch(Uri.parse('$uri/api/updateStatus'),
-                      body: jsonEncode({
-                        "email": email,
-                      }),
-                      headers: <String, String>{
-                    'Content-Type': 'application/json; charset=UTF-8',
+                    // ignore: use_build_context_synchronously
+                    // Navigator.of(context).push(
+                    //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AmazonScreen.routeName,
+                        (Route<dynamic> route) => false);
                   });
-            });
-      } else {
-        httpErrorHandle(
-            response: response3,
-            context: context,
-            onSuccess: () async {
-              
-              Future.delayed(const Duration(seconds: 2), () => "2");
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.setString(
-                  'x-auth-token', jsonDecode(response3.body)['token']);
-              // ignore: use_build_context_synchronously
-              Provider.of<UserProvider>(context, listen: false)
-                  .setUser(response.body);
-              // ignore: use_build_context_synchronously
-              showSnackBar(context, "Acccount Logging In");
-              Future.delayed(const Duration(seconds: 2), () => "2");
-
-              // ignore: use_build_context_synchronously
-              // Navigator.of(context).push(
-              //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
-
-              // ignore: use_build_context_synchronously
-              Navigator.pushNamedAndRemoveUntil(context, AmazonScreen.routeName,
-                  (Route<dynamic> route) => false);
-            });
-      }
+            } else {
+              registerVerified(
+                  context: context, email: email, pass: pass, name: name);
+            }
+          });
     } catch (e) {
       //showSnackBar(context, e.toString());
     }
@@ -253,13 +294,17 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  void resendOTP({required BuildContext context, required String email}) async {
+  void resendOTP(
+      {required BuildContext context,
+      required String email,
+      required String name}) async {
     final overlay = LoadingOverlay.of(context);
 
     try {
       http.Response response = await http.post(Uri.parse('$uri/api/sendOTP'),
           body: jsonEncode({
             "email": email,
+            "name": name,
           }),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -297,6 +342,11 @@ class AuthService extends ChangeNotifier {
 
   void setOTPStatus() async {
     ServerStatus = true;
+    notifyListeners();
+  }
+
+  void setResetTimer() async {
+    requestSuccess = true;
     notifyListeners();
   }
 

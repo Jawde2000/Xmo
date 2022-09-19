@@ -1,12 +1,9 @@
-import 'package:amazon/common/widgets/custom_button.dart';
-import 'package:amazon/common/widgets/custom_horizontalLine.dart';
-import 'package:amazon/common/widgets/custom_textfield.dart';
-import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/constants/utils.dart';
-import 'package:amazon/features/auth/services/auth_service.dart';
+import 'package:ximo/common/widgets/custom_button.dart';
+import 'package:ximo/common/widgets/custom_horizontalLine.dart';
+import 'package:ximo/common/widgets/custom_textfield.dart';
+import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import '../../../common/widgets/custom_loadingIndicator.dart';
 import '../../../common/widgets/custom_passwordtextfield.dart';
 import 'signUp_screen.dart';
 
@@ -38,7 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
     authService.logIn(
         context: context,
         email: _mailController.text,
-        pass: _passController.text);
+        pass: _passController.text,
+        name: '');
   }
 
   @override
@@ -52,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Welcome to Ximo",
+              "Welcome to Xmo",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w100,

@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.amazon">
+    package="com.new.package.ximo">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
    
-        android:label="amazon"
+        android:label="Ximo"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

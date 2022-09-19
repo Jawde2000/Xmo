@@ -1,4 +1,4 @@
-package com.example.amazon
+package com.new.package.ximo
 
 import io.flutter.embedding.android.FlutterActivity
 

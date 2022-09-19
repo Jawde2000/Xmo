@@ -1,4 +1,4 @@
-import 'package:amazon/models/user.dart';
+import 'package:ximo/models/user.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserProvider extends ChangeNotifier {

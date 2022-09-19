@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:amazon/constants/utils.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ximo/constants/utils.dart';
 import 'package:flutter/material.dart';
 
 class LoadingOverlay {

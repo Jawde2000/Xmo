@@ -1,9 +1,11 @@
-import 'package:amazon/common/widgets/custom_button.dart';
-import 'package:amazon/common/widgets/custom_textfield.dart';
-import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/constants/utils.dart';
-import 'package:amazon/features/auth/services/auth_service.dart';
+import 'package:ximo/common/widgets/custom_button.dart';
+import 'package:ximo/common/widgets/custom_textfield.dart';
+import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/constants/utils.dart';
+import 'package:ximo/features/auth/screens/emailVerification_screen.dart';
+import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:ximo/models/verification.dart';
 
 import '../../../common/widgets/custom_loadingIndicator.dart';
 import '../../../common/widgets/custom_passwordtextfield.dart';
@@ -40,16 +42,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void signup() {
-    authService.signUp(
-        context: context,
-        email: _mailController.text,
-        pass: _passController.text,
-        name: _nameController.text);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VerificationScreen(
+                  email: _mailController.text,
+                  pass: _passController.text,
+                  name: _nameController.text,
+                ),
+            maintainState: false),
+        (Route<dynamic> route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
-    final overlay = LoadingOverlay.of(context);
     return Scaffold(
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
@@ -59,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Welcome to Amazon",
+              "Welcome to Xmo",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w100,
@@ -144,14 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         } else {
                           if (_passController.text ==
                               _repeatPassController.text) {
-                            if (status == true) {
-                              await overlay.during(
-                                  Future.delayed(const Duration(seconds: 1)));
-                            }
                             signup();
-                            setState(() {
-                              status = false;
-                            });
                           } else {
                             showToast("Password did not match");
                           }

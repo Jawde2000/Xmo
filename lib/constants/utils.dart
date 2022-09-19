@@ -1,4 +1,4 @@
-import 'package:amazon/constants/global_variables.dart';
+import 'package:ximo/constants/global_variables.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

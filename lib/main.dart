@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
-import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/features/auth/screens/Ximo_screen.dart';
-import 'package:amazon/features/auth/screens/emailVerification_screen.dart';
-import 'package:amazon/features/auth/screens/login_screen.dart';
-import 'package:amazon/features/auth/screens/auth_screens.dart';
-import 'package:amazon/providers/user_providers.dart';
-import 'package:amazon/router.dart';
+import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/features/auth/screens/Ximo_screen.dart';
+import 'package:ximo/features/auth/screens/emailVerification_screen.dart';
+import 'package:ximo/features/auth/screens/login_screen.dart';
+import 'package:ximo/providers/user_providers.dart';
+import 'package:ximo/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'features/auth/services/auth_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(MultiProvider(

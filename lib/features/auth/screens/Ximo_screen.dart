@@ -1,5 +1,5 @@
-import 'package:amazon/common/widgets/custom_navbar.dart';
-import 'package:amazon/constants/global_variables.dart';
+import 'package:ximo/common/widgets/custom_navbar.dart';
+import 'package:ximo/constants/global_variables.dart';
 import 'package:flutter/material.dart';
 
 class AmazonScreen extends StatefulWidget {

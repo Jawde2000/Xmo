@@ -1,5 +1,5 @@
-import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/features/auth/services/auth_service.dart';
+import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatefulWidget {

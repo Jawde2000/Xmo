@@ -1,8 +1,7 @@
-import 'package:amazon/common/widgets/custom_navbar.dart';
-import 'package:amazon/features/auth/screens/Ximo_screen.dart';
-import 'package:amazon/features/auth/screens/auth_screens.dart';
-import 'package:amazon/features/auth/screens/login_screen.dart';
-import 'package:amazon/features/auth/screens/signUp_screen.dart';
+import 'package:ximo/common/widgets/custom_navbar.dart';
+import 'package:ximo/features/auth/screens/Ximo_screen.dart';
+import 'package:ximo/features/auth/screens/login_screen.dart';
+import 'package:ximo/features/auth/screens/signUp_screen.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {

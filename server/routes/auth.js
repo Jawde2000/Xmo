@@ -33,8 +33,6 @@ AuthRouter.post("/api/signup", async (req, res) => {
         const { name, email, pass } = req.body;
         //post data into database
         const userExist = await User.findOne({ email });
-        //generate random 6 digits number
-        const validationNumber = Math.floor(100000 + Math.random() * 900000);
 
         if (userExist) {
             return res.status(400).json({msg: "User with same email already exist"});
@@ -53,14 +51,8 @@ AuthRouter.post("/api/signup", async (req, res) => {
             name: name,
         });    
 
-        let verification = new Verification({
-            email, validationNumber
-        })
-
         user = await user.save();
-        verification = await verification.save();
         res.json(user);
-        res.json(verification);
 } catch (e) {
     res.status(500).json({error: e.message});
 }
@@ -176,7 +168,7 @@ AuthRouter.post('/api/VerificationTimedOut', async (req, res) => {
 
 AuthRouter.post('/api/sendOTP', async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, name } = req.body;
 
         const user = await User.findOne({ email });
 
@@ -194,10 +186,10 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
             }
         });
 
-        const text1 = "Dear " + user.name + ", \n\n" + "Your Verification code is " + validationNumber + 
+        const text1 = "Dear " + name + ", \n\n" + "Your Verification code is " + validationNumber + 
             ". Please do not share with others. The verification code is going to expired in 1 minute.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
 
-        const text2 = "Dear " + user.name + ", \n\n" + "You are logging into a device, please use verification code " + validationNumber + " to log in." +
+        const text2 = "Dear " + name + ", \n\n" + "You are logging into a device, please use verification code " + validationNumber + " to log in." +
         ". Please do not share with others. The verification code is going to expired in 1 minute.\n\nThank you\nBest regards\n\nFrom IT Team Reime"; 
 
         const mailOptionsLogin = {
@@ -217,7 +209,7 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
                 // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
         };
     
-        if (user.emailVerified) {
+        if (user) {
             transporter.sendMail(mailOptionsLogin, function(error, info){
                 if(error){
                     console.log(error);
@@ -230,7 +222,7 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
     
             verification = await verification.save();
             res.json(verification);
-        } else if (!user.emailVerified) {
+        } else if (!user) {
             transporter.sendMail(mailOptionsRegistration, function(error, info){
                 if(error){
                     console.log(error);

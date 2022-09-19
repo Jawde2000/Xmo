@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "345723371764",
+    "project_id": "ximo-10308",
+    "storage_bucket": "ximo-10308.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345723371764:android:d0ddba08a170c424da9ea1",
+        "android_client_info": {
+          "package_name": "com.example.ximo_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345723371764-5q7d8t02j8au3p9hcqc6d1skhlvsp07s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJy4QCn5kOMdNU8UZcUZl529vO8ByTFk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345723371764-5q7d8t02j8au3p9hcqc6d1skhlvsp07s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

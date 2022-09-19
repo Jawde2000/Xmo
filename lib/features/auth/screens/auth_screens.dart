@@ -1,8 +1,8 @@
-import 'package:amazon/common/widgets/custom_button.dart';
-import 'package:amazon/common/widgets/custom_textfield.dart';
-import 'package:amazon/constants/global_variables.dart';
-import 'package:amazon/constants/utils.dart';
-import 'package:amazon/features/auth/services/auth_service.dart';
+import 'package:ximo/common/widgets/custom_button.dart';
+import 'package:ximo/common/widgets/custom_textfield.dart';
+import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/constants/utils.dart';
+import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 enum Auth {
@@ -47,7 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
     authService.logIn(
         context: context,
         email: _mailController.text,
-        pass: _passController.text);
+        pass: _passController.text, name: '');
   }
 
   @override
