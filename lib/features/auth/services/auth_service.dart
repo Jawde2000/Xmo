@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:ximo/constants/error_handling.dart';
 import 'package:ximo/constants/global_variables.dart';
 import 'package:ximo/constants/utils.dart';
-import 'package:ximo/features/auth/screens/Ximo_screen.dart';
+import 'package:ximo/features/auth/screens/Xmo_screen.dart';
 import 'package:ximo/features/auth/screens/emailVerification_screen.dart';
-import 'package:ximo/features/auth/screens/login_screen.dart';
+import 'package:ximo/features/auth/screens/Traditional_login_screen.dart';
 import 'package:ximo/models/user.dart';
 import 'package:ximo/models/verification.dart';
 import 'package:ximo/providers/user_providers.dart';
@@ -83,7 +83,7 @@ class AuthService extends ChangeNotifier {
 
                   // ignore: use_build_context_synchronously
                   Navigator.pushNamedAndRemoveUntil(context,
-                      AmazonScreen.routeName, (Route<dynamic> route) => false);
+                      XmoScreen.routeName, (Route<dynamic> route) => false);
                 });
           });
     } catch (e) {
@@ -225,10 +225,8 @@ class AuthService extends ChangeNotifier {
                     //     MaterialPageRoute(builder: (context) => const AmazonScreen()));
 
                     // ignore: use_build_context_synchronously
-                    Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        AmazonScreen.routeName,
-                        (Route<dynamic> route) => false);
+                    Navigator.pushNamedAndRemoveUntil(context,
+                        XmoScreen.routeName, (Route<dynamic> route) => false);
                   });
             } else {
               registerVerified(
@@ -288,7 +286,12 @@ class AuthService extends ChangeNotifier {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      httpErrorHandle(response: response, context: context, onSuccess: () {});
+      httpErrorHandle(
+          response: response,
+          context: context,
+          onSuccess: () {
+            setOTPStatus();
+          });
     } catch (error) {
       //showSnackBar(context, e.toString());
     }
@@ -333,8 +336,8 @@ class AuthService extends ChangeNotifier {
       await prefs.setString('x-auth-token', '');
 
       // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(
-          context, LoginScreen.routeName, (Route<dynamic> route) => false);
+      Navigator.pushNamedAndRemoveUntil(context,
+          TraditionalLoginScreen.routeName, (Route<dynamic> route) => false);
     } catch (e) {
       showSnackBar(context, e.toString());
     }

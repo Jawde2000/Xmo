@@ -33,7 +33,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final String pass;
   final String name;
   final AuthService authService = AuthService();
-  static const maxSeconds = 60;
+  static const maxSeconds = 10;
   static int seconds = maxSeconds;
   Timer? timer;
   bool status = true;
@@ -48,28 +48,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
       if (!mounted) {
         return;
       }
-
-      if (lastNum) {
-        setState(() {
-          if (seconds > 0) {
-            seconds--;
-          } else {
-            stopTimer();
-            buttonStatus = !buttonStatus;
-            status = false;
-            setState(() {
-              _o1letterController.text = "";
-              _s2letterController.text = "";
-              _t3letterController.text = "";
-              _f4letterController.text = "";
-              _fv5letterController.text = "";
-              _st6letterController.text = "";
-            });
-            // verificationTimedOut();
-          }
-          //stopTimer();
-        });
-      }
+      setState(() {
+        if (seconds > 0) {
+          seconds--;
+        } else {
+          stopTimer();
+          status = false;
+          buttonStatus = !buttonStatus;
+          setState(() {
+            _o1letterController.text = "";
+            _s2letterController.text = "";
+            _t3letterController.text = "";
+            _f4letterController.text = "";
+            _fv5letterController.text = "";
+            _st6letterController.text = "";
+          });
+          // verificationTimedOut();
+        }
+        //stopTimer();
+      });
     });
   }
 
@@ -83,7 +80,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
       setState(() {
         buttonStatus = true;
       });
-
       return const Text("OTP code is expired");
     }
 
@@ -105,9 +101,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     _f4letterController.dispose();
     _fv5letterController.dispose();
     _st6letterController.dispose();
-    setState(() {
-      seconds = maxSeconds;
-    });
   }
 
   void verify() {
@@ -129,7 +122,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   void resendOTP() {
     // ignore: non_constant_identifier_names
-    final Status = Provider.of<AuthService>(context, listen: true);
+    final Status = Provider.of<AuthService>(context, listen: false);
     Status.resendOTP(context: context, email: email, name: name);
     if (Status.ServerStatus) {
       setState(() {
@@ -142,12 +135,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Widget build(BuildContext context) {
     // ignore: non_constant_identifier_names
     final Status = Provider.of<AuthService>(context, listen: true);
-
-    if (Status.requestSuccess) {
-      setState(() {
-        seconds = maxSeconds;
-      });
-    }
 
     if (enterPage) {
       resendOTP();
@@ -200,8 +187,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 if (value.length == 1)
                                   {
                                     FocusScope.of(context).nextFocus(),
-                                    if (value.isEmpty)
-                                      {FocusScope.of(context).previousFocus()}
                                   }
                               },
                               style: Theme.of(context).textTheme.headline6,
@@ -220,9 +205,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()},
+                                  {
+                                    FocusScope.of(context).nextFocus(),
+                                  },
                                 if (value.isEmpty)
-                                  {FocusScope.of(context).previousFocus()}
+                                  {
+                                    FocusScope.of(context).previousFocus(),
+                                  }
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -240,9 +229,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()},
+                                  {
+                                    FocusScope.of(context).nextFocus(),
+                                  },
                                 if (value.isEmpty)
-                                  {FocusScope.of(context).previousFocus()}
+                                  {
+                                    FocusScope.of(context).previousFocus(),
+                                  }
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -260,9 +253,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()},
+                                  {
+                                    FocusScope.of(context).nextFocus(),
+                                  },
                                 if (value.isEmpty)
-                                  {FocusScope.of(context).previousFocus()}
+                                  {
+                                    FocusScope.of(context).previousFocus(),
+                                  }
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -280,9 +277,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: TextField(
                               onChanged: (value) => {
                                 if (value.length == 1)
-                                  {FocusScope.of(context).nextFocus()},
+                                  {
+                                    FocusScope.of(context).nextFocus(),
+                                  },
                                 if (value.isEmpty)
-                                  {FocusScope.of(context).previousFocus()}
+                                  {
+                                    FocusScope.of(context).previousFocus(),
+                                  }
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -307,7 +308,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                     }),
                                   },
                                 if (value.isEmpty)
-                                  {FocusScope.of(context).previousFocus()}
+                                  {
+                                    FocusScope.of(context).previousFocus(),
+                                  }
                               },
                               style: Theme.of(context).textTheme.headline6,
                               keyboardType: TextInputType.number,
@@ -335,9 +338,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             ),
                             onTap: () async {
                               if (buttonStatus == true) {
+                                deleteOTP();
                                 setState(() {
                                   status = true;
-                                  buttonStatus = false;
+                                  buttonStatus = !buttonStatus;
                                   _o1letterController.text = "";
                                   _s2letterController.text = "";
                                   _t3letterController.text = "";
@@ -345,8 +349,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   _fv5letterController.text = "";
                                   _st6letterController.text = "";
                                 });
-
-                                deleteOTP();
                                 resendOTP();
                               } else {
                                 showToast(

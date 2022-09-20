@@ -10,11 +10,6 @@ import 'package:ximo/models/verification.dart';
 import '../../../common/widgets/custom_loadingIndicator.dart';
 import '../../../common/widgets/custom_passwordtextfield.dart';
 
-enum Auth {
-  signup,
-  signin,
-}
-
 class SignUpScreen extends StatefulWidget {
   static const String routeName = '/signup-screen';
   const SignUpScreen({Key? key}) : super(key: key);

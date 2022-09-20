@@ -219,9 +219,6 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
                     res.json({yo: info.response});
                 }
             });
-    
-            verification = await verification.save();
-            res.json(verification);
         } else if (!user) {
             transporter.sendMail(mailOptionsRegistration, function(error, info){
                 if(error){
@@ -232,14 +229,14 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
                     res.json({yo: info.response});
                 }
             });
-    
-            verification = await verification.save();
-            res.json(verification);
         } else {
             return res.status(409).json({msg: 'Verify innacessible'});
         }
         
         res.status(200).json({msg: "OTP sent"});
+        verification = await verification.save();
+        res.json(verification);
+        
     } catch (error) {
         res.status(500).json({error: error.message});
     }

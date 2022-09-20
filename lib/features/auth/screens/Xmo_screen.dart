@@ -2,15 +2,15 @@ import 'package:ximo/common/widgets/custom_navbar.dart';
 import 'package:ximo/constants/global_variables.dart';
 import 'package:flutter/material.dart';
 
-class AmazonScreen extends StatefulWidget {
-  static const String routeName = "/amazon";
-  const AmazonScreen({Key? key}) : super(key: key);
+class XmoScreen extends StatefulWidget {
+  static const String routeName = "/xmo";
+  const XmoScreen({Key? key}) : super(key: key);
 
   @override
-  State<AmazonScreen> createState() => _AmazonScreenState();
+  State<XmoScreen> createState() => _XmoScreenState();
 }
 
-class _AmazonScreenState extends State<AmazonScreen> {
+class _XmoScreenState extends State<XmoScreen> {
   @override
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
@@ -19,7 +19,6 @@ class _AmazonScreenState extends State<AmazonScreen> {
       body: const SafeArea(
         child: NavBar(),
       ),
-      
     );
   }
 }

@@ -1,25 +1,29 @@
 import 'package:ximo/common/widgets/custom_navbar.dart';
-import 'package:ximo/features/auth/screens/Ximo_screen.dart';
+import 'package:ximo/features/auth/screens/Xmo_screen.dart';
+import 'package:ximo/features/auth/screens/Traditional_login_screen.dart';
 import 'package:ximo/features/auth/screens/login_screen.dart';
 import 'package:ximo/features/auth/screens/signUp_screen.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
-    case LoginScreen.routeName:
+    case TraditionalLoginScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const LoginScreen(),
+        builder: (_) => const TraditionalLoginScreen(),
       );
     case SignUpScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const SignUpScreen());
-    case AmazonScreen.routeName:
+    case XmoScreen.routeName:
       return MaterialPageRoute(
-          settings: routeSettings, builder: (_) => const AmazonScreen());
+          settings: routeSettings, builder: (_) => const XmoScreen());
     case NavBar.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const NavBar());
+    case LoginScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const LoginScreen());
     default:
       return MaterialPageRoute(
         builder: (_) => const Scaffold(
