@@ -3,13 +3,12 @@
 const express = require("express");
 const User = require("../models/user");
 const Verification = require("../models/verification");
+const Post = require("../models/post");
 const bycrypt = require("bcrypt");
 const AuthRouter = express.Router();
 const jwt = require("jsonwebtoken");
-const { ObjectId, MongoClient }  = require("mongodb");
 const nodeMailer = require("nodemailer");
 const auth = require("../middleware/auth");
-const CronJob = require('cron').CronJob;
 
 // const firebaseConfig = {
 //     apiKey: "API_KEY",
@@ -25,7 +24,24 @@ const CronJob = require('cron').CronJob;
 // };
   
 // const app = initializeApp(firebaseConfig);
+AuthRouter.post("/api/post", async (req, res) => {
+    try {
+        const { ownedby, message } = req.body;
 
+        const salt = await bycrypt.genSalt(5);
+        const newHashMessage = await bycrypt.hash(message, salt);
+
+        let post = new Post({
+            ownedby: ownedby, 
+            message: newHashMessage, 
+        });    
+
+        post = await post.save();
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+});
 
 AuthRouter.post("/api/signup", async (req, res) => {
     try {
@@ -178,6 +194,9 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
             email, validationNumber, 
         })
 
+        verification = await verification.save();
+        res.json(verification);
+
         const transporter = nodeMailer.createTransport({
             service: 'Gmail',
             auth: {
@@ -232,11 +251,6 @@ AuthRouter.post('/api/sendOTP', async (req, res) => {
         } else {
             return res.status(409).json({msg: 'Verify innacessible'});
         }
-        
-        res.status(200).json({msg: "OTP sent"});
-        verification = await verification.save();
-        res.json(verification);
-        
     } catch (error) {
         res.status(500).json({error: error.message});
     }
@@ -263,7 +277,6 @@ AuthRouter.get("/api/userData", auth, async (req, res) => {
     const user = await User.findById(req.user);
     res.json({...user._doc, token: req.token});
 });
-
 
 module.exports = AuthRouter;
 
