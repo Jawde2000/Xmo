@@ -3,11 +3,9 @@ import 'package:ximo/common/widgets/custom_textfield.dart';
 import 'package:ximo/constants/global_variables.dart';
 import 'package:ximo/constants/utils.dart';
 import 'package:ximo/features/auth/screens/emailVerification_screen.dart';
+import 'package:ximo/features/auth/services/ScreenSize.dart';
 import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:ximo/models/verification.dart';
-
-import '../../../common/widgets/custom_loadingIndicator.dart';
 import '../../../common/widgets/custom_passwordtextfield.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -18,7 +16,7 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> with screenSize {
   final _signupFormKey = GlobalKey<FormState>();
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
@@ -51,19 +49,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double bodySize =
+        (returnScreenWidth(context) / returnScreenHeight(context)) * 0.5;
     return Scaffold(
       backgroundColor: globalV.greyBackgroundCOlor,
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: EdgeInsets.all(returnScreenHeight(context) / 47),
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Welcome to Xmo",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w100,
+             SizedBox(
+              height: returnScreenHeight(context) * 0.15,
+              width: returnScreenWidth(context) * 0.95,
+              child: const Center(
+                child: Text(
+                  "Welcome to Xmo",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w100,
+                  ),
+                ),
               ),
             ),
             Container(
@@ -77,8 +83,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Form(
                 key: _signupFormKey,
                 child: Column(children: [
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: returnScreenHeight(context) * 0.02,
                   ),
                   CustomTextField(
                     controller: _nameController,
@@ -88,8 +94,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     emptyText: "Name field mandatory",
                     regexText: "",
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: returnScreenHeight(context) * 0.02,
                   ),
                   CustomTextField(
                     controller: _mailController,
@@ -100,8 +106,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     emptyText: "Email  field mandatory",
                     regexText: "Please enter a valid email",
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: returnScreenHeight(context) * 0.02,
                   ),
                   PasswordTextField(
                     controller: _passController,
@@ -113,8 +119,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     regexText:
                         "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character",
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: returnScreenHeight(context) * 0.02,
                   ),
                   PasswordTextField(
                     controller: _repeatPassController,
@@ -126,8 +132,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     regexText:
                         "Password should contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character",
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: returnScreenHeight(context) * 0.02,
                   ),
                   CustomButton(
                     text: const Text(
@@ -152,8 +158,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                       }
                     },
-                    height: 0.08,
-                    width: 0.3,
+                    height: 0.07,
+                    width: 0.7,
                   ),
                 ]),
               ),

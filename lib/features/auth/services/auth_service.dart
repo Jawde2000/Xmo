@@ -212,6 +212,7 @@ class AuthService extends ChangeNotifier {
                         await SharedPreferences.getInstance();
                     await prefs.setString('x-auth-token',
                         jsonDecode(signinResponse.body)['token']);
+                    await prefs.setString('userID', jsonDecode(signinResponse.body)['_id']);
                     // ignore: use_build_context_synchronously
                     Provider.of<UserProvider>(context, listen: false)
                         .setUser(response.body);
@@ -297,21 +298,58 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  void resendOTP(
-      {required BuildContext context,
-      required String email,
-      required String name}) async {
+  void post(String messageBody, BuildContext context) async {
+    final overlay = LoadingOverlay.of(context);
+    try {
+      await overlay.during(Future.delayed(const Duration(seconds: 1)));
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? id = prefs.getString('userID');
+
+
+      http.Response post = await http.post(
+        Uri.parse("$uri/api/post"),
+        body: jsonEncode(
+          {
+            "ownedby": id,
+            "message": messageBody,
+          },
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      httpErrorHandle(
+          response: post,
+          context: context,
+          onSuccess: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, XmoScreen.routeName, (Route<dynamic> route) => false);
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void resendOTP({
+    required BuildContext context,
+    required String email,
+    required String name,
+  }) async {
     final overlay = LoadingOverlay.of(context);
 
     try {
-      http.Response response = await http.post(Uri.parse('$uri/api/sendOTP'),
-          body: jsonEncode({
-            "email": email,
-            "name": name,
-          }),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          });
+      http.Response response = await http.post(
+        Uri.parse('$uri/api/sendOTP'),
+        body: jsonEncode({
+          "email": email,
+          "name": name,
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
 
       await overlay.during(Future.delayed(const Duration(seconds: 1)));
 

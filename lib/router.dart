@@ -1,6 +1,7 @@
 import 'package:ximo/common/widgets/custom_navbar.dart';
 import 'package:ximo/features/auth/screens/Xmo_screen.dart';
 import 'package:ximo/features/auth/screens/Traditional_login_screen.dart';
+import 'package:ximo/features/auth/screens/add_recommendation.dart';
 import 'package:ximo/features/auth/screens/login_screen.dart';
 import 'package:ximo/features/auth/screens/signUp_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case LoginScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const LoginScreen());
+    case addRecommendation.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const addRecommendation());
     default:
       return MaterialPageRoute(
         builder: (_) => const Scaffold(

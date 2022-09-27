@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class HorizontalLine extends StatelessWidget {
   final String label;
   final double height;
+  final double width;
   final Color colour;
 
   const HorizontalLine({
     Key? key,
     required this.label,
     required this.height,
+    required this.width,
     required this.colour,
   }) : super(key: key);
 

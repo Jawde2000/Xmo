@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:ximo/common/widgets/custom_button.dart';
 import 'package:ximo/constants/global_variables.dart';
 import 'package:ximo/constants/utils.dart';
+import 'package:ximo/features/auth/services/ScreenSize.dart';
 import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,7 @@ class VerificationScreen extends StatefulWidget {
       _VerificationScreenState(this.email, this.pass, this.name);
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _VerificationScreenState extends State<VerificationScreen> with screenSize{
   final _verificationFormKey = GlobalKey<FormState>();
   final TextEditingController _o1letterController = TextEditingController();
   final TextEditingController _s2letterController = TextEditingController();
@@ -33,7 +34,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final String pass;
   final String name;
   final AuthService authService = AuthService();
-  static const maxSeconds = 10;
+  static const maxSeconds = 60;
   static int seconds = maxSeconds;
   Timer? timer;
   bool status = true;

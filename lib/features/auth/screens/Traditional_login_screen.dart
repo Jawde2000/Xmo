@@ -2,6 +2,7 @@ import 'package:ximo/common/widgets/custom_button.dart';
 import 'package:ximo/common/widgets/custom_horizontalLine.dart';
 import 'package:ximo/common/widgets/custom_textfield.dart';
 import 'package:ximo/constants/global_variables.dart';
+import 'package:ximo/features/auth/services/ScreenSize.dart';
 import 'package:ximo/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../../../common/widgets/custom_passwordtextfield.dart';
@@ -15,7 +16,7 @@ class TraditionalLoginScreen extends StatefulWidget {
   State<TraditionalLoginScreen> createState() => _TraditionalLoginScreenState();
 }
 
-class _TraditionalLoginScreenState extends State<TraditionalLoginScreen> {
+class _TraditionalLoginScreenState extends State<TraditionalLoginScreen> with screenSize{
   final _signinFormKey = GlobalKey<FormState>();
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
@@ -54,11 +55,17 @@ class _TraditionalLoginScreenState extends State<TraditionalLoginScreen> {
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Welcome Back!",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w100,
+            SizedBox(
+              height: returnScreenHeight(context) * 0.15,
+              width: returnScreenWidth(context) * 0.95,
+              child: const Center(
+                child: Text(
+                  "Welcome Back!",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w100,
+                  ),
+                ),
               ),
             ),
             Container(
@@ -117,7 +124,8 @@ class _TraditionalLoginScreenState extends State<TraditionalLoginScreen> {
                     ),
                     HorizontalLine(
                       label: "OR",
-                      height: width * 0.03,
+                      height: height * 0.06,
+                      width: width * 0.03,
                       colour: globalV.ximoColor,
                     ),
                     SizedBox(
@@ -125,17 +133,30 @@ class _TraditionalLoginScreenState extends State<TraditionalLoginScreen> {
                     ),
                     CustomButton(
                       text: const Text(
-                        "New user? Sign in here",
+                        "Continue with Google",
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      onTap: () => {
-                        Navigator.pushNamed(context, SignUpScreen.routeName)
-                      },
+                      onTap: () => {},
                       height: 0.06,
-                      width: 0.5,
+                      width: 0.6,
+                    ),
+                    SizedBox(
+                      height: returnScreenHeight(context) * 0.02,
+                    ),
+                    CustomButton(
+                      text: const Text(
+                        "Continue with Facebook",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onTap: () => {},
+                      height: 0.06,
+                      width: 0.6,
                     ),
                   ])),
             ),
